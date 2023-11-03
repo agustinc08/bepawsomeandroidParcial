@@ -1,4 +1,4 @@
-package com.example.bepawsomeandroid.Fragment
+package com.example.bepawsomeandroid.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
