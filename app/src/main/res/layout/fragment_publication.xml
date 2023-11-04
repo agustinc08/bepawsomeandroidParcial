@@ -6,12 +6,76 @@
     tools:context=".Fragment.Publication"
     android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:text="PUBLICATION" />
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Publicación nueva"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextNombre"
+            android:hint="Nombre"
+            android:inputType="text"
+            android:layout_margin="16dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextUbicacion"
+            android:hint="Ubicación"
+            android:inputType="text"
+            android:layout_margin="16dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroupSexo"
+            android:layout_margin="16dp">
+            <RadioButton
+                android:id="@+id/radioButtonMacho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Macho"/>
+            <RadioButton
+                android:id="@+id/radioButtonHembra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hembra"/>
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextPeso"
+            android:hint="Peso (en kg)"
+            android:inputType="numberDecimal"
+            android:layout_margin="16dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextEdad"
+            android:hint="Edad"
+            android:inputType="number"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonGuardar"
+            android:text="Guardar Publicación"
+            android:layout_margin="16dp"/>
+    </LinearLayout>
 
 </FrameLayout>
