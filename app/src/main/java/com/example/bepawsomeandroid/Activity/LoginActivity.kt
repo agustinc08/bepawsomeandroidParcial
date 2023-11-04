@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.bepawsomeandroid.R
@@ -18,9 +19,9 @@ class LoginActivity : AppCompatActivity() {
         val nombreUsuario: TextView = findViewById(R.id.nombreUsuario)
         val contrasenia: TextView = findViewById(R.id.contrasenia)
         val loginBtn: MaterialButton = findViewById(R.id.loginbtn)
-        val googleButton: ImageButton = findViewById(R.id.googleButton)
-        val fbButton: ImageButton = findViewById(R.id.fbButton)
-        val twitterButton: ImageButton = findViewById(R.id.twitterButton)
+        val googleView: ImageView= findViewById(R.id.googleView)
+        val fbView: ImageView = findViewById(R.id.fbView)
+        val twitterView: ImageView = findViewById(R.id.twitterView)
 
         // nombreUsuario: Tester
         // contrasenia: Tester
@@ -41,9 +42,9 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        googleButton.setOnClickListener(clickListener)
-        fbButton.setOnClickListener(clickListener)
-        twitterButton.setOnClickListener(clickListener)
+        googleView.setOnClickListener(clickListener)
+        fbView.setOnClickListener(clickListener)
+        twitterView.setOnClickListener(clickListener)
     }
 }
 

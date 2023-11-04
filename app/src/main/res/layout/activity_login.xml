@@ -99,29 +99,30 @@
           android:layout_alignParentBottom="true"
           android:gravity="center">
 
-          <ImageButton
+          <ImageView
               android:layout_width="48dp"
               android:layout_height="48dp"
               android:layout_margin="20dp"
               android:src="@drawable/google"
-              android:background="@android:color/transparent"
-              android:id="@+id/googleButton" />
+              android:clickable="true"
+              android:id="@+id/googleView" />
 
-          <ImageButton
+          <ImageView
               android:layout_width="48dp"
               android:layout_height="48dp"
               android:layout_margin="20dp"
               android:src="@drawable/fb"
               android:background="@android:color/transparent"
-              android:id="@+id/fbButton" />
+              android:clickable="true"
+              android:id="@+id/fbView"/>
 
-          <ImageButton
+          <ImageView
               android:layout_width="48dp"
               android:layout_height="48dp"
               android:layout_margin="20dp"
               android:src="@drawable/twitterlogo"
-              android:background="@android:color/transparent"
-              android:id="@+id/twitterButton" />
+              android:clickable="true"
+              android:id="@+id/twitterView" />
 
       </LinearLayout>
 
