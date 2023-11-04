@@ -3,6 +3,7 @@ package com.example.bepawsomeandroid.ViewModels
 import com.example.bepawsomeandroid.Api.DogApiService
 import com.example.bepawsomeandroid.Models.Animal
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
@@ -24,4 +25,14 @@ class AnimalViewModel {
     fun guardarAnimalesEnFirebase(animal: Animal) {
         database.setValue(animal)
     }
+    fun leerAnimalesDesdeFirebase(listener: ValueEventListener) {
+        database.child("animales").addListenerForSingleValueEvent(listener)
+    }
+    fun guardarAnimalEnFirebase(animal: Animal) {
+        val animalKey = database.child("animales").push().key
+        if (animalKey != null) {
+            database.child("animales").child(animalKey).setValue(animal)
+        }
+    }
+
 }
