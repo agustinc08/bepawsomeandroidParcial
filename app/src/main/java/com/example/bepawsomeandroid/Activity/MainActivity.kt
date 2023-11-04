@@ -1,10 +1,11 @@
-package com.example.bepawsomeandroid
+package com.example.bepawsomeandroid.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.bepawsomeandroid.Fragment.*
+import com.example.bepawsomeandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         navegation = findViewById(R.id.navMenu)
         navegation.setOnNavigationItemSelectedListener(mOnNavMenu)
