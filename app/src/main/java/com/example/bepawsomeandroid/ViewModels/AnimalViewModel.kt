@@ -32,6 +32,4 @@ class AnimalViewModel : ViewModel() {
             database.child("animales").child(animalKey).setValue(animal)
         }
     }
-
-
 }

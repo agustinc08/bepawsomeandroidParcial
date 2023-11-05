@@ -1,7 +1,9 @@
 package com.example.bepawsomeandroid.Fragment
 
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +19,13 @@ import com.example.bepawsomeandroid.Models.Animal
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModelFactory
 import com.example.bepawsomeandroid.R
-import org.json.JSONObject
 
 class Publication : Fragment() {
 
     private lateinit var editTextNombre: EditText
     private lateinit var editTextUbicacion: EditText
     private lateinit var editTextRaza: EditText
+    private lateinit var editTextSubraza: EditText
     private lateinit var radioGroupSexo: RadioGroup
     private lateinit var radioButtonMacho: RadioButton
     private lateinit var radioButtonHembra: RadioButton
@@ -33,6 +35,7 @@ class Publication : Fragment() {
     private lateinit var buttonAddImage: Button
     private lateinit var imageInputLayout: LinearLayout
     private var imageInputCount = 1
+    private var imgUrl1: String = ""
 
     // Inicializar AnimalViewModel
     private val animalViewModel: AnimalViewModel by lazy {
@@ -50,10 +53,25 @@ class Publication : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
+
+        // Agregar un listener para el primer EditText
+        editTextImagen1.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                // Actualizar imgUrl1 cuando el usuario ingrese una URL en el primer campo de imagen
+                imgUrl1 = s.toString()
+            }
+        })
+
         // Buscar las vistas por ID
         editTextNombre = view.findViewById(R.id.editTextNombre)
         editTextUbicacion = view.findViewById(R.id.editTextUbicacion)
         editTextRaza = view.findViewById(R.id.razaPerro)
+        editTextSubraza = view.findViewById(R.id.subrazaPerro)
         radioGroupSexo = view.findViewById(R.id.radioGroupSexo)
         radioButtonMacho = view.findViewById(R.id.radioButtonMacho)
         radioButtonHembra = view.findViewById(R.id.radioButtonHembra)
@@ -68,9 +86,11 @@ class Publication : Fragment() {
             val nombre = editTextNombre.text.toString()
             val ubicacion = editTextUbicacion.text.toString()
             val raza = editTextRaza.text.toString()
+            val subraza = editTextSubraza.text.toString()
             val selectedSexId = radioGroupSexo.checkedRadioButtonId
             val peso = editTextPeso.text.toString()
             val edad = editTextEdad.text.toString()
+            val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
 
             if (nombre.isEmpty() || ubicacion.isEmpty() || raza.isEmpty() || selectedSexId == -1 || peso.isEmpty() || edad.isEmpty()) {
                 Toast.makeText(requireContext(), "Por favor, complete todos los campos obligatorios.", Toast.LENGTH_SHORT).show()
@@ -84,6 +104,15 @@ class Publication : Fragment() {
                 return@setOnClickListener
             }
 
+            val imgUrls = mutableListOf<String>()
+            for (i in 1..imageInputCount) {
+                val editText = imageInputLayout.findViewWithTag<EditText>("editTextImagen$i")
+                val imgUrl = editText?.text.toString() // Verificar si la vista es nula
+                if (imgUrl.isNotEmpty()) {
+                    imgUrls.add(imgUrl)
+                }
+            }
+
             // Crear un objeto Animal con los datos de la publicación
             val animal = Animal(
                 nombre = nombre,
@@ -92,10 +121,11 @@ class Publication : Fragment() {
                 peso = peso.toDouble(),
                 edad = edad.toInt(),
                 raza = raza,
-                imgUrl1 = getImageUrl(1),
-                imgUrl2 = getImageUrl(2),
-                imgUrl3 = getImageUrl(3),
-                imgUrl4 = getImageUrl(4)
+                subRaza = subraza,
+                imgUrl1 = imgUrls.getOrElse(0) { "N/A" }, // Usar "N/A" si la URL está vacía
+                imgUrl2 = imgUrls.getOrElse(1) { "N/A" },
+                imgUrl3 = imgUrls.getOrElse(2) { "N/A" },
+                imgUrl4 = imgUrls.getOrElse(3) { "N/A" }
             )
 
             // Guardar el animal en Firebase
@@ -133,16 +163,7 @@ class Publication : Fragment() {
         newEditText.hint = "URL de la Imagen $imageNumber"
         newEditText.inputType = InputType.TYPE_TEXT_VARIATION_URI
         newEditText.setSingleLine()
-        newEditText.id = View.generateViewId()
+        newEditText.tag = "editTextImagen$imageNumber" // Establecer una etiqueta para identificar el EditText
         imageInputLayout.addView(newEditText)
-    }
-
-    private fun getImageUrl(imageNumber: Int): String {
-       // val editText = imageInputLayout.findViewById<EditText>(getIdFromImageNumber(imageNumber))
-        return ""
-    }
-
-    private fun getIdFromImageNumber(imageNumber: Int): Int {
-        return resources.getIdentifier("editTextImagen$imageNumber", "id", requireActivity().packageName)
     }
 }

@@ -50,6 +50,14 @@
                 android:inputType="text"
                 android:layout_margin="16dp"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/subrazaPerro"
+                android:hint="Subraza"
+                android:inputType="text"
+                android:layout_margin="16dp"/>
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
