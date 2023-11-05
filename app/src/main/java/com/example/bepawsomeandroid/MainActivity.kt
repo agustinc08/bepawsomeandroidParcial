@@ -1,4 +1,4 @@
-package com.example.bepawsomeandroid
+package com.example.bepawsomeandroid.Fragment
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,7 @@ import androidx.fragment.app.replace
 import com.example.bepawsomeandroid.Fragment.Adoption
 import com.example.bepawsomeandroid.Fragment.Favorite
 import com.example.bepawsomeandroid.Fragment.Home
-import com.example.bepawsomeandroid.Fragment.Publication
+import com.example.bepawsomeandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase

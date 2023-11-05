@@ -3,7 +3,7 @@ package com.example.bepawsomeandroid.ViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class AnimalViewModelFactory : ViewModelProvider.Factory {
+class AnimalViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AnimalViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
