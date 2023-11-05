@@ -10,8 +10,16 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+<<<<<<< HEAD
 import com.example.bepawsomeandroid.R
 import org.json.JSONArray
+=======
+import androidx.lifecycle.ViewModelProvider
+import com.example.bepawsomeandroid.Models.Animal
+import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
+import com.example.bepawsomeandroid.ViewModels.AnimalViewModelFactory
+import com.example.bepawsomeandroid.R
+>>>>>>> develop
 import org.json.JSONObject
 
 class Publication : Fragment() {
@@ -24,6 +32,14 @@ class Publication : Fragment() {
     private lateinit var editTextPeso: EditText
     private lateinit var editTextEdad: EditText
     private lateinit var buttonGuardar: Button
+<<<<<<< HEAD
+=======
+
+    // Inicializar AnimalViewModel
+    private val animalViewModel: AnimalViewModel by lazy {
+        ViewModelProvider(this, AnimalViewModelFactory()).get(AnimalViewModel::class.java)
+    }
+>>>>>>> develop
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +62,11 @@ class Publication : Fragment() {
         editTextEdad = view.findViewById(R.id.editTextEdad)
         buttonGuardar = view.findViewById(R.id.buttonGuardar)
 
+<<<<<<< HEAD
         val publicationList = JSONArray()
 
+=======
+>>>>>>> develop
         // Agregar acciones para el botón "Guardar Publicación"
         buttonGuardar.setOnClickListener {
             val nombre = editTextNombre.text.toString()
@@ -68,6 +87,7 @@ class Publication : Fragment() {
                 return@setOnClickListener
             }
 
+<<<<<<< HEAD
             // Crear un objeto JSON con los datos de la publicación
             val publication = JSONObject()
             publication.put("nombre", nombre)
@@ -78,6 +98,13 @@ class Publication : Fragment() {
 
             // Agregar el objeto al array de publicaciones
             publicationList.put(publication)
+=======
+            // Crear un objeto Animal con los datos de la publicación
+            val animal = Animal(nombre, ubicacion, selectedSex, peso.toDouble(), edad.toInt())
+
+            // Guardar el animal en Firebase
+            animalViewModel.guardarAnimalEnFirebase(animal)
+>>>>>>> develop
 
             // Limpiar el formulario
             editTextNombre.text.clear()
