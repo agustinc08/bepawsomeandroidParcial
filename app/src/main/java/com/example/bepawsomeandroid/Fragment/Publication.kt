@@ -55,7 +55,6 @@ class Publication : Fragment() {
 
         val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
 
-        // Agregar un listener para el primer EditText
         editTextImagen1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -90,7 +89,6 @@ class Publication : Fragment() {
             val selectedSexId = radioGroupSexo.checkedRadioButtonId
             val peso = editTextPeso.text.toString()
             val edad = editTextEdad.text.toString()
-            val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
 
             if (nombre.isEmpty() || ubicacion.isEmpty() || raza.isEmpty() || selectedSexId == -1 || peso.isEmpty() || edad.isEmpty()) {
                 Toast.makeText(requireContext(), "Por favor, complete todos los campos obligatorios.", Toast.LENGTH_SHORT).show()
