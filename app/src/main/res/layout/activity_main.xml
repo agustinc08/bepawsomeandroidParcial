@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,20 +8,38 @@
     tools:context=".Activity.MainActivity">
 
     <FrameLayout
+        android:id="@+id/frame_usuario"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/baseline_person_24"
+            android:clickable="true"
+            android:id="@+id/drawerClickId"
+            android:visibility="visible"
+            android:contentDescription="Ir A usuario" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="646dp"
+        android:layout_gravity="top"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
+        app:layout_constraintTop_toBottomOf="@id/frame_usuario">
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/navegation_menu"
         android:layout_gravity="bottom"
         android:background="@color/blue_menu"
-        app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
-        />
-
+        app:itemTextColor="@color/white"
+        app:menu="@menu/navegation_menu" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

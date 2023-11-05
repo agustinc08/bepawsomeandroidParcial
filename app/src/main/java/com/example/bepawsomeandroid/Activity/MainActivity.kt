@@ -1,7 +1,10 @@
 package com.example.bepawsomeandroid.Activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.bepawsomeandroid.Fragment.*
@@ -67,6 +70,15 @@ class MainActivity : AppCompatActivity() {
             addToBackStack("replacement")
         }
 
-        
+        val dCView: ImageView = findViewById(R.id.drawerClickId)
+
+        val clickListener = View.OnClickListener {
+            val intent = Intent(this, DrawerMenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        dCView.setOnClickListener(clickListener);
+
+
     }
 }
