@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId){
             R.id.home -> {
                 supportFragmentManager.commit {
-                    replace<Home>(R.id.frame_container)
+                    replace<Home>(R.id.fragmentContainerView)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.favorite -> {
                 supportFragmentManager.commit {
-                    replace<Favorite>(R.id.frame_container)
+                    replace<Favorite>(R.id.fragmentContainerView)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.adoption -> {
                 supportFragmentManager.commit {
-                    replace<Adoption>(R.id.frame_container)
+                    replace<Adoption>(R.id.fragmentContainerView)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.publication -> {
                 supportFragmentManager.commit {
-                    replace<Publication>(R.id.frame_container)
+                    replace<Publication>(R.id.fragmentContainerView)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         navegation.setOnNavigationItemSelectedListener(mOnNavMenu)
 
        supportFragmentManager.commit{
-            replace<Home>(R.id.frame_container)
+            replace<Home>(R.id.fragmentContainerView)
             setReorderingAllowed(true)
             addToBackStack("replacement")
         }
