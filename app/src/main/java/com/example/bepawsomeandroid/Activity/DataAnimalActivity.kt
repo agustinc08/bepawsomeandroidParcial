@@ -10,66 +10,55 @@ import com.bumptech.glide.Glide
 import com.example.bepawsomeandroid.R
 
 class DataAnimalActivity : AppCompatActivity() {
+    private lateinit var animalImageView: ImageView
+    private lateinit var nameTextView: TextView
+    private lateinit var breedTextView: TextView
+    private lateinit var ageTextView: TextView
+    private lateinit var sexTextView: TextView
 
-    private lateinit var nombreTextView: TextView
-    private lateinit var ubicacionTextView: TextView
-    private lateinit var sexoTextView: TextView
-    private lateinit var pesoTextView: TextView
-    private lateinit var edadTextView: TextView
-    private lateinit var razaTextView: TextView
-    private lateinit var imageView1: ImageView
-    private lateinit var imageView2: ImageView
-    private lateinit var imageView3: ImageView
-    private lateinit var imageView4: ImageView
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_animal)
 
-        // Obtener referencia a las vistas
-        nombreTextView = findViewById(R.id.nombreTextView)
-        ubicacionTextView = findViewById(R.id.ubicacionTextView)
-        sexoTextView = findViewById(R.id.sexoTextView)
-        pesoTextView = findViewById(R.id.pesoTextView)
-        edadTextView = findViewById(R.id.edadTextView)
-        razaTextView = findViewById(R.id.razaTextView)
-        imageView1 = findViewById(R.id.imageView1)
-        imageView2 = findViewById(R.id.imageView2)
-        imageView3 = findViewById(R.id.imageView3)
-        imageView4 = findViewById(R.id.imageView4)
+        // Inicializar las vistas
+        animalImageView = findViewById(R.id.animalImageView)
+        nameTextView = findViewById(R.id.nameTextView)
+        breedTextView = findViewById(R.id.breedTextView)
+        ageTextView = findViewById(R.id.ageTextView)
+        sexTextView = findViewById(R.id.sexTextView)
 
-        // Obtener el ID del animal desde Intent (reemplaza 'animalId' con el nombre correcto de la clave)
+        // Recuperar el ID del animal de la intent
         val animalId = intent.getStringExtra("animalId")
 
-        // Referencia a la base de datos de Firebase
-        val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("animales").child(animalId!!)
+        // Verificar que animalId no sea nulo antes de usarlo en Firebase Database
+        if (animalId != null) {
+            // Inicializar la referencia a la base de datos
+            databaseReference = FirebaseDatabase.getInstance().reference.child("animales").child(animalId)
 
-        // Escuchar cambios en los datos del animal
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Obtener objeto Animal desde Firebase
-                    val animal: Animal = dataSnapshot.getValue(Animal::class.java)!!
+            // Obtener y mostrar los datos del animal desde Firebase
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val animal = snapshot.getValue(Animal::class.java)
+                    if (animal != null) {
+                        nameTextView.text = "Nombre: ${animal.nombre}"
+                        breedTextView.text = "Raza: ${animal.raza}"
+                        ageTextView.text = "Edad: ${animal.edad}"
+                        sexTextView.text = "Sexo: ${animal.sexo}"
 
-                    // Mostrar datos del animal en las vistas
-                    nombreTextView.text = "Nombre: ${animal.nombre}"
-                    ubicacionTextView.text = "Ubicación: ${animal.ubicacion}"
-                    sexoTextView.text = "Sexo: ${animal.sexo}"
-                    pesoTextView.text = "Peso: ${animal.peso} kg"
-                    edadTextView.text = "Edad: ${animal.edad} años"
-                    razaTextView.text = "Raza: ${animal.raza}"
-
-                    // Cargar imágenes usando Glide (asegúrate de tener las URLs de las imágenes en el objeto Animal)
-                    Glide.with(this@DataAnimalActivity).load(animal.imgUrl1).into(imageView1)
-                    Glide.with(this@DataAnimalActivity).load(animal.imgUrl2).into(imageView2)
-                    Glide.with(this@DataAnimalActivity).load(animal.imgUrl3).into(imageView3)
-                    Glide.with(this@DataAnimalActivity).load(animal.imgUrl4).into(imageView4)
+                        Glide.with(this@DataAnimalActivity)
+                            .load(animal.imgUrl1)
+                            .into(animalImageView)
+                    }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar errores de Firebase, si es necesario
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    println("Error al leer datos desde Firebase: ${error.message}")
+                }
+            })
+        } else {
+            // Manejar el caso en el que animalId es nulo, por ejemplo, mostrar un mensaje de error o volver atrás
+        }
     }
 }
