@@ -32,10 +32,13 @@ class DataAnimalActivity : AppCompatActivity() {
         // Recuperar el ID del animal de la intent
         val animalId = intent.getStringExtra("animalId")
 
+        // Imprimir el ID del animal en la consola
+        println("Animal ID: $animalId")
+
         // Verificar que animalId no sea nulo antes de usarlo en Firebase Database
         if (animalId != null) {
             // Inicializar la referencia a la base de datos
-            databaseReference = FirebaseDatabase.getInstance().reference.child("animales").child(animalId)
+            databaseReference = FirebaseDatabase.getInstance().reference.child("publicaciones").child("animales").child(animalId)
 
             // Obtener y mostrar los datos del animal desde Firebase
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {

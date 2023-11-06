@@ -78,6 +78,8 @@ class Home : Fragment() {
 
             // Pasar el ID del perro a DataAnimalActivity
             intent.putExtra("animalId", animalId)
+            println("Animal ID: $animalId") // Imprimir el ID antes de iniciar la actividad
+
 
             startActivity(intent)
         }
