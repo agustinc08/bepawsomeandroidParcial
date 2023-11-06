@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.bepawsomeandroid.Models.ListaUsuariosPersistencia
 import com.example.bepawsomeandroid.R
 import com.google.android.material.button.MaterialButton
 
@@ -21,13 +22,19 @@ class LoginActivity : AppCompatActivity() {
         val googleView: ImageView= findViewById(R.id.googleView)
         val fbView: ImageView = findViewById(R.id.fbView)
         val twitterView: ImageView = findViewById(R.id.twitterView)
+        val listaUsuarios = ListaUsuariosPersistencia()
 
         // nombreUsuario: Tester
         // contrasenia: Tester
 
         loginBtn.setOnClickListener {
-            if (nombreUsuario.text.toString() == "Tester" && contrasenia.text.toString() == "Tester") {
-                Toast.makeText(this, "Logueado", Toast.LENGTH_SHORT).show()
+            val nombreUsuarioInput = nombreUsuario.text.toString()
+            val contraseniaInput = contrasenia.text.toString()
+
+            val usuarioEncontrado = listaUsuarios.encontrarUsuario(nombreUsuarioInput, contraseniaInput)
+
+            if (usuarioEncontrado != null) {
+                Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else {
@@ -35,8 +42,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //Aca siempre loguea con Tester
         val clickListener = View.OnClickListener {
-            Toast.makeText(this, "Usuario logueado", Toast.LENGTH_SHORT).show()
+            val usuarioTester = listaUsuarios.obtenerTester()
+            Toast.makeText(this, "${usuarioTester.nombre} Logueado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -44,6 +53,8 @@ class LoginActivity : AppCompatActivity() {
         googleView.setOnClickListener(clickListener)
         fbView.setOnClickListener(clickListener)
         twitterView.setOnClickListener(clickListener)
+
+
     }
 }
 

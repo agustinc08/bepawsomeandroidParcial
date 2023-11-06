@@ -1,6 +1,7 @@
 package com.example.bepawsomeandroid.Activity
 import com.example.bepawsomeandroid.Fragment.Publication
 import android.os.Bundle
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -63,7 +64,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val searchView = findViewById<SearchView>(R.id.searchView)
+
+        val searchView = findViewById<SearchView>(R.id.searchView)
+
+
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+               // val searchResults = searchInYourData(query)
+               // updateFrameLayoutContent(searchResults)
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                return false;
+            }
+        })
+
+
 
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
