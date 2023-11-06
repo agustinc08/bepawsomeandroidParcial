@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //val searchView = findViewById<SearchView>(R.id.searchView)
+
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         databaseReference = FirebaseDatabase.getInstance().reference
 
