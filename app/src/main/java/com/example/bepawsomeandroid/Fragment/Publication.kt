@@ -1,13 +1,14 @@
 package com.example.bepawsomeandroid.Fragment
 
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -57,7 +58,7 @@ class Publication : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 // Actualizar imgUrl1 cuando el usuario ingrese una URL en el primer campo de imagen
-                imgUrl1 = s.toString()
+                var imgUrl1 = s.toString()
             }
         })
 
