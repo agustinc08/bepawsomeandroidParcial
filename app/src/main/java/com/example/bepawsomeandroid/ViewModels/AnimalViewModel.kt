@@ -23,6 +23,11 @@ class AnimalViewModel : ViewModel() {
         return apiService.getAnimals()
     }
 
+    fun obtenerAnimalPorId(animalId: String, listener: ValueEventListener) {
+        val animalReference = database.child("animales").child(animalId)
+        animalReference.addListenerForSingleValueEvent(listener)
+    }
+
     fun leerAnimalesDesdeFirebase(listener: ValueEventListener) {
         database.child("animales").addListenerForSingleValueEvent(listener)
     }
@@ -32,6 +37,4 @@ class AnimalViewModel : ViewModel() {
             database.child("animales").child(animalKey).setValue(animal)
         }
     }
-
-
 }

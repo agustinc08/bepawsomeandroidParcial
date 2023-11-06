@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -46,6 +47,19 @@ class Publication : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
+
+        editTextImagen1.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                // Actualizar imgUrl1 cuando el usuario ingrese una URL en el primer campo de imagen
+                imgUrl1 = s.toString()
+            }
+        })
 
         // Buscar las vistas por ID
         editTextNombre = view.findViewById(R.id.editTextNombre)

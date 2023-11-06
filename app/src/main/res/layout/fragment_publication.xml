@@ -17,7 +17,24 @@
             android:orientation="vertical"
             android:padding="16dp"
             >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Publicación nueva"
+                android:textSize="24sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,7 +50,21 @@
                 android:hint="Nombre"
                 android:inputType="text"
                 android:layout_margin="16dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextNombre"
+                android:hint="Nombre"
+                android:inputType="text"
+                android:layout_margin="16dp"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextUbicacion"
+                android:hint="Ubicación"
+                android:inputType="text"
+                android:layout_margin="16dp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +105,21 @@
                 android:hint="Peso (en kg)"
                 android:inputType="numberDecimal"
                 android:layout_margin="16dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextPeso"
+                android:hint="Peso (en kg)"
+                android:inputType="numberDecimal"
+                android:layout_margin="16dp"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextEdad"
+                android:hint="Edad"
+                android:inputType="number"
+                android:layout_margin="16dp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,6 +167,8 @@
                 />
 
         </LinearLayout>
+
+    </ScrollView>
 
     </ScrollView>
 
