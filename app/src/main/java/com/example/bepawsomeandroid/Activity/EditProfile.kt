@@ -36,7 +36,7 @@ class EditProfile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        var sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        var sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", MODE_PRIVATE)
         val jsonObjectString = sharedPreferences.getString("UserLogueado", null)
         var jsonObject: JSONObject? = null
         if (jsonObjectString != null) {
@@ -99,7 +99,7 @@ class EditProfile : AppCompatActivity() {
             passwordUserCredential = password
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", MODE_PRIVATE)
         val gson = Gson()
         val userObject = User(nameUserCredential, mailUserCredential, passwordUserCredential, imageUrlUserCredential, telefonoUserCredential)
         val jsonUser = gson.toJson(userObject)
