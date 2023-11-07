@@ -17,7 +17,7 @@ class AnimalViewModel : ViewModel() {
         .build()
 
     private val apiService: DogApiService = retrofit.create(DogApiService::class.java)
-    private val database = FirebaseDatabase.getInstance().reference.child("publicaciones")
+    private val database = FirebaseDatabase.getInstance().reference.child("animales")
 
     fun obtenerAnimalesDeApi(): Call<Animal> {
         return apiService.getAnimals()
@@ -30,8 +30,7 @@ class AnimalViewModel : ViewModel() {
 
     fun leerAnimalesDesdeFirebase(listener: ValueEventListener) {
         database.addListenerForSingleValueEvent(listener)
-        }
-
+    }
     fun guardarAnimalEnFirebase(animal: Animal) {
         val animalKey = database.child("animales").push().key
         if (animalKey != null) {
