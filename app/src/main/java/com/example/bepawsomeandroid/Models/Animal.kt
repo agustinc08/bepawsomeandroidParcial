@@ -11,7 +11,8 @@ data class Animal(
     var imgUrl2: String = "",
     var imgUrl3: String = "",
     var imgUrl4: String = "",
-    var usuarioId: String = ""
+    var usuarioId: String = "",
+    var subraza: String =""
 ) {
     // Constructor sin argumentos necesario para Firebase
     constructor() : this("", "", "", 0.0, 0, "", "", "", "", "")

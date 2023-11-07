@@ -29,8 +29,9 @@ class AnimalViewModel : ViewModel() {
     }
 
     fun leerAnimalesDesdeFirebase(listener: ValueEventListener) {
-        database.child("animales").addListenerForSingleValueEvent(listener)
-    }
+        database.addListenerForSingleValueEvent(listener)
+        }
+
     fun guardarAnimalEnFirebase(animal: Animal) {
         val animalKey = database.child("animales").push().key
         if (animalKey != null) {

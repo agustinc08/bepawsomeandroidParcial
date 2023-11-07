@@ -36,7 +36,7 @@ class DataAnimalActivity : AppCompatActivity() {
         // Verificar que animalId no sea nulo antes de usarlo en Firebase Database
         if (animalId != null) {
             // Inicializar la referencia a la base de datos
-            databaseReference = FirebaseDatabase.getInstance().reference.child("publicaciones").child("animales").child(animalId)
+            databaseReference = FirebaseDatabase.getInstance().reference.child("animales").child(animalId)
 
             // Obtener y mostrar los datos del animal desde Firebase
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -51,7 +51,8 @@ class DataAnimalActivity : AppCompatActivity() {
                         nameTextView.text = "Nombre: ${animal.nombre}"
                         ageTextView.text = "Edad: ${animal.edad}"
                         sexTextView.text = "Sexo: ${animal.sexo}"
-
+                        sexTextView.text = "Raza: ${animal.raza}"
+                        sexTextView.text = "SubRaza: ${animal.subraza}"
                     }
                 }
 
@@ -61,6 +62,6 @@ class DataAnimalActivity : AppCompatActivity() {
             })
         } else {
             // Manejar el caso en el que animalId es nulo, por ejemplo, mostrar un mensaje de error o volver atrás
+            }
         }
-    }
 }
