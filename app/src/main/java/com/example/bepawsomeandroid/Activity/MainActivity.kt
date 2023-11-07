@@ -16,6 +16,8 @@ import com.example.bepawsomeandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import org.json.JSONException
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,15 +81,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var sharedPreferences: SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
-        var nombreUsuario: String? = sharedPreferences.getString("nombreUsuario", "")
-        println("ESTE ES EL DE SHARED PREFRENCESSS!! " +nombreUsuario)
+
+        //val searchView = findViewById<SearchView>(R.id.searchView)
 
 
-        val searchView = findViewById<SearchView>(R.id.searchView)
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        /*searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                // val searchResults = searchInYourData(query)
                // updateFrameLayoutContent(searchResults)
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextChange(query: String): Boolean {
                 return false;
             }
-        })
+        })*/
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         databaseReference = FirebaseDatabase.getInstance().reference

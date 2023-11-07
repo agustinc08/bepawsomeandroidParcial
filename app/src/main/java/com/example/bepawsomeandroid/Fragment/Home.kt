@@ -1,5 +1,6 @@
 package com.example.bepawsomeandroid.Fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +16,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.bepawsomeandroid.Activity.DataAnimalActivity
 import com.example.bepawsomeandroid.Models.Animal
+import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModelFactory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
+import org.json.JSONException
+import org.json.JSONObject
 
 class Home : Fragment() {
 
@@ -29,16 +34,31 @@ class Home : Fragment() {
     }
 
     private lateinit var animalButtonsLayout: LinearLayout
+    var jsonObject: JSONObject? = null
+    var userObject: User? = null
+    var gson = Gson()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPref = requireContext().getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        val jsonObjectString = sharedPref.getString("UserLogueado", null)
+
+        if (jsonObjectString != null) {
+            try {
+                jsonObject = JSONObject(jsonObjectString)
+                userObject = gson.fromJson(jsonObject.toString(), User::class.java)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
 
         animalButtonsLayout = view.findViewById(R.id.animalButtonsLayout)
 
@@ -77,15 +97,21 @@ class Home : Fragment() {
             .load(animal.imgUrl1)
             .into(imageView)
 
-        var isLiked = false  // Variable para rastrear si se ha presionado "Me gusta"
+        var isLiked = false
 
         likeButton.setOnClickListener {
             if (isLiked) {
                 likeButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_700))
+                //aca tengo que sacarle el objeto de la lista de fav
+                userObject?.eliminarAnimalDeFavoritos(animal)
                 isLiked = false
             } else {
                 likeButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue_menu))
                 //aca es donde lo guardo en la lista de fav
+                userObject?.agregarAnimalAFavoritos(animal)
+
+                //renderizar en la otra vista
+
                 isLiked = true
             }
         }

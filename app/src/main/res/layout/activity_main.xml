@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activity.MainActivity">
 
-    <android.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:imeOptions="actionSearch"
-        android:layout_gravity="top"
-        android:iconifiedByDefault="false"
-        android:queryHint="Buscador"
-        />
 
     <FrameLayout
         android:id="@+id/frame_container"

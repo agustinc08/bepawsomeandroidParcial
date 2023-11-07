@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
             if (usuarioEncontrado != null) {
                 Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
                 guardarPreferencias(usuarioEncontrado)
+
                 val intent = Intent(this, MainActivity::class.java)
 
 
