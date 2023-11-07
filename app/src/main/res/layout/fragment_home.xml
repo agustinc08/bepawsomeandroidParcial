@@ -18,15 +18,17 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:id="@+id/yourImageView"
+            android:id="@+id/imageViewUserProfile2"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="30dp"
-            android:src="@drawable/baseline_person_24" />
+            android:layout_marginLeft="30dp"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewNombreUsuario"
+            android:textColor="@color/purple_700"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
