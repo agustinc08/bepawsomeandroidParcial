@@ -7,11 +7,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.room.Room
 import com.example.bepawsomeandroid.Activity.MainActivity
 import com.example.bepawsomeandroid.Models.Usuario
 import com.example.bepawsomeandroid.R
-import com.example.bepawsomeandroid.dao.roomDb
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,12 +39,7 @@ class LoginActivity : AppCompatActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     // Inicializa la base de datos
-                    val db = Room.databaseBuilder(applicationContext, roomDb::class.java, "mi-base-de-datos").build()
-                    val usuarioDao = db.usuarioDao()
 
-                    // Inserta datos en la base de datos
-                    val nuevoUsuario = Usuario("", nombreUsuario.text.toString(), contrasenia.text.toString() )
-                    usuarioDao.insertarUsuario(nuevoUsuario)
                 }
 
                 startActivity(intent)
