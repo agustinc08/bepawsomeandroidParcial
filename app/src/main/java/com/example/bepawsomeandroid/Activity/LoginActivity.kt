@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.bepawsomeandroid.Activity.MainActivity
 import com.example.bepawsomeandroid.Models.ListaUsuariosPersistencia
-import com.example.bepawsomeandroid.Models.Usuario
+import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -31,20 +31,17 @@ class LoginActivity : AppCompatActivity() {
         val twitterView: ImageView = findViewById(R.id.twitterView)
         val listaUsuarios = ListaUsuariosPersistencia()
 
-        //cargarPreferencias()
 
-        // nombreUsuario: Tester
-        // contrasenia: Tester
 
         loginBtn.setOnClickListener {
             val nombreUsuarioInput = nombreUsuario.text.toString()
             val contraseniaInput = contrasenia.text.toString()
 
-            val usuarioEncontrado = listaUsuarios.encontrarUsuario(nombreUsuarioInput, contraseniaInput)
+            val userEncontrado = listaUsuarios.encontrarUsuario(nombreUsuarioInput, contraseniaInput)
 
-            if (usuarioEncontrado != null) {
-                Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
-                guardarPreferencias(usuarioEncontrado)
+            if (userEncontrado != null) {
+                Toast.makeText(this, "${userEncontrado.name} Logueado", Toast.LENGTH_SHORT).show()
+                guardarPreferencias(userEncontrado)
                 val intent = Intent(this, MainActivity::class.java)
 
 
@@ -56,9 +53,9 @@ class LoginActivity : AppCompatActivity() {
 
         //Aca siempre loguea con Tester
         val clickListener = View.OnClickListener {
-            val usuarioTester = listaUsuarios.obtenerTester()
-            //guardarPreferencias(usuarioTester)
-            Toast.makeText(this, "${usuarioTester.nombre} Logueado", Toast.LENGTH_SHORT).show()
+            val userTester = listaUsuarios.obtenerTester()
+            guardarPreferencias(userTester)
+            Toast.makeText(this, "${userTester.name} Logueado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -78,21 +75,22 @@ class LoginActivity : AppCompatActivity() {
 
   //  }
 
-    fun guardarPreferencias(usuarioEncontrado:Usuario){
+    fun guardarPreferencias(userEncontrado: User){
         var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = preferencias.edit()
 
+        var nameUser = userEncontrado.name
+        var mailUser = userEncontrado.mail
+        var imageUrlUser = userEncontrado.imageUrl
+        var telefonoUser = userEncontrado.telefono
+        var passwordUser = userEncontrado.password
 
-        var nombreUsuario = usuarioEncontrado.nombre
-        var mailUsuario = usuarioEncontrado.mail
-
-
-        editor.putString("nombreUsuario", nombreUsuario)
-        editor.putString("mailUsuario", mailUsuario)
-
+        editor.putString("nameUser" , nameUser)
+        editor.putString("mailUser", mailUser)
+        editor.putString("imageUrlUser", imageUrlUser)
+        editor.putString("telefonoUser", telefonoUser)
+        editor.putString("passwordUser", passwordUser)
         editor.putBoolean("userLogueado",true)
-
-
         editor.commit()
     }
 
