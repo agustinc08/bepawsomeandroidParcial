@@ -47,12 +47,6 @@ class LoginActivity : AppCompatActivity() {
                 guardarPreferencias(usuarioEncontrado)
                 val intent = Intent(this, MainActivity::class.java)
 
-                // Co rutina necesaria para crear la base de datos ( obligatioria para trabajar dentro del onClickListener)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    // Inicializa la base de datos
-
-                }
 
                 startActivity(intent)
             } else {
@@ -95,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
 
         editor.putString("nombreUsuario", nombreUsuario)
         editor.putString("mailUsuario", mailUsuario)
+
         editor.putBoolean("userLogueado",true)
 
 
