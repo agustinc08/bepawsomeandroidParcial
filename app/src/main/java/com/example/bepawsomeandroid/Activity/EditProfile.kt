@@ -1,10 +1,18 @@
 package com.example.bepawsomeandroid.Activity
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
+import com.google.gson.Gson
+import com.squareup.picasso.Picasso
+import org.json.JSONException
 import org.json.JSONObject
 import java.security.MessageDigest
 
@@ -19,6 +27,32 @@ class EditProfile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
+        var sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        val jsonObjectString = sharedPreferences.getString("UserLogueado", null)
+        var jsonObject: JSONObject? = null
+        if (jsonObjectString != null) {
+            try {
+                jsonObject = JSONObject(jsonObjectString)
+                // Ahora tienes tu objeto JSON
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+        var gson = Gson()
+        var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
+
+        var nombreUser = userObject.name
+        val textViewUserName = findViewById<TextView>(R.id.textViewUserName)
+        textViewUserName.text = nombreUser
+
+        var imagenProfileUser = userObject.imageUrl
+        val imageViewUser = findViewById<ImageView>(R.id.imageViewUserProfile) // Asegúrate de tener un ImageView en tu layout
+        if (imagenProfileUser.isNotEmpty()) {
+            Picasso.get().load(imagenProfileUser).into(imageViewUser)
+        }
+
+
 
         editTextName = findViewById(R.id.editTextName)
         editTextPassword = findViewById(R.id.editTextPassword)

@@ -59,6 +59,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata:2.3.1")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     testImplementation("junit:junit:4.13.2")
+    implementation("com.squareup.picasso:picasso:2.8")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.3.1")

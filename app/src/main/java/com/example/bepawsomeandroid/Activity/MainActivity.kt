@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
 
-        println(userObject.name)
+        //println(userObject.name)
 
         val searchView = findViewById<SearchView>(R.id.searchView)
 
