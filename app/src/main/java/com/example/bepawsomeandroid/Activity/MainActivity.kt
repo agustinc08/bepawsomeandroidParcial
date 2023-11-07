@@ -1,7 +1,10 @@
 package com.example.bepawsomeandroid.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.bepawsomeandroid.Fragment.Publication
 import android.os.Bundle
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -17,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var navegation: BottomNavigationView
     private lateinit var databaseReference: DatabaseReference
+
+    var sharedPreferences:SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
 
     private val mOnNavMenu = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -64,9 +69,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+       var nombreUsuario: String? = sharedPreferences.getString("nombreUsuario","")
+        println(nombreUsuario)
+
 
         val searchView = findViewById<SearchView>(R.id.searchView)
-
 
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -82,9 +89,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
-
-
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         databaseReference = FirebaseDatabase.getInstance().reference
 
@@ -97,4 +101,7 @@ class MainActivity : AppCompatActivity() {
             addToBackStack("replacement")
         }
     }
+
+
 }
+

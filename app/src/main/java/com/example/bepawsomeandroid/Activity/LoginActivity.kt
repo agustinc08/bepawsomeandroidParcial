@@ -1,6 +1,8 @@
 package com.example.bepawsomeandroid.Activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.bepawsomeandroid.Models.ListaUsuariosPersistencia
+import com.example.bepawsomeandroid.Models.Usuario
 import com.example.bepawsomeandroid.R
 import com.google.android.material.button.MaterialButton
 
@@ -24,6 +27,8 @@ class LoginActivity : AppCompatActivity() {
         val twitterView: ImageView = findViewById(R.id.twitterView)
         val listaUsuarios = ListaUsuariosPersistencia()
 
+        //cargarPreferencias()
+
         // nombreUsuario: Tester
         // contrasenia: Tester
 
@@ -35,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (usuarioEncontrado != null) {
                 Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
+                //guardarPreferencias(usuarioEncontrado)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else {
@@ -45,17 +51,44 @@ class LoginActivity : AppCompatActivity() {
         //Aca siempre loguea con Tester
         val clickListener = View.OnClickListener {
             val usuarioTester = listaUsuarios.obtenerTester()
+            //guardarPreferencias(usuarioTester)
             Toast.makeText(this, "${usuarioTester.nombre} Logueado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
         googleView.setOnClickListener(clickListener)
         fbView.setOnClickListener(clickListener)
         twitterView.setOnClickListener(clickListener)
 
 
     }
+
+    fun cargarPreferencias(){
+        var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+        var nombreUsuario: String? = preferencias.getString("nombreUsuario","No Esta Cargado")
+        var mailUsuario: String? = preferencias.getString("mailUsuario","No Esta Cargado")
+        var userLogueado: Boolean? = preferencias.getBoolean("userLogueado",false)
+
+
+    }
+
+    fun guardarPreferencias(usuarioEncontrado:Usuario){
+        var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = preferencias.edit()
+
+
+        var nombreUsuario = usuarioEncontrado.nombre
+        var mailUsuario = usuarioEncontrado.mail
+
+
+        editor.putString("nombreUsuario", nombreUsuario)
+        editor.putString("mailUsuario", mailUsuario)
+        editor.putBoolean("userLogueado",true)
+
+
+        editor.commit()
+    }
+
 }
 
 
