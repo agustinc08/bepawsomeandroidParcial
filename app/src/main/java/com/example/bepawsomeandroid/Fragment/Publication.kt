@@ -15,9 +15,12 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.bepawsomeandroid.Models.Animal
 import com.example.bepawsomeandroid.R
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModelFactory
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONArray
 
 class Publication : Fragment() {
@@ -72,45 +75,47 @@ class Publication : Fragment() {
         editTextPeso = view.findViewById(R.id.editTextPeso)
         editTextEdad = view.findViewById(R.id.editTextEdad)
         buttonGuardar = view.findViewById(R.id.buttonGuardar)
-        buttonAddImage = view.findViewById(R.id.buttonAddImage)
         imageInputLayout = view.findViewById(R.id.imageInputLayout)
 
         val publicationList = JSONArray()
 
-        // Agregar acciones para el botón "Guardar Publicación"
         buttonGuardar.setOnClickListener {
-            // Coloca aquí el código para guardar la publicación en el JSONArray y ViewModel
-            // ...
+            // Obtener los valores de los campos de entrada
+            val nombre = editTextNombre.text.toString()
+            val ubicacion = editTextUbicacion.text.toString()
+            val raza = editTextRaza.text.toString()
+            val sexo = if (radioButtonMacho.isChecked) "Macho" else "Hembra"
+            val peso = editTextPeso.text.toString().toDoubleOrNull() ?: 0.0
+            val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
+
+            // Obtener las URL de las imágenes desde los campos de texto
+            val imgUrl1 = view.findViewById<EditText>(R.id.editTextImagen1).text.toString()
+            val imgUrl2 = view.findViewById<EditText>(R.id.editTextImagen2).text.toString()
+            val imgUrl3 = view.findViewById<EditText>(R.id.editTextImagen3).text.toString()
+            val imgUrl4 = view.findViewById<EditText>(R.id.editTextImagen4).text.toString()
+
+            // Crear una instancia de Animal con los datos ingresados por el usuario
+            val nuevoAnimal = Animal(nombre, ubicacion, sexo, peso, edad, raza, imgUrl1, imgUrl2, imgUrl3, imgUrl4)
+
+            // Guardar el animal en Firebase
+            val animalesRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("animales")
+            val nuevoAnimalId = animalesRef.push().key
+            nuevoAnimalId?.let {
+                animalesRef.child(it).setValue(nuevoAnimal)
+                    .addOnSuccessListener {
+                        // Animal guardado exitosamente en Firebase
+                        Toast.makeText(requireContext(), "Publicación guardada exitosamente.", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        // Error al guardar el animal en Firebase
+                        Toast.makeText(requireContext(), "Error al guardar la publicación.", Toast.LENGTH_SHORT).show()
+                    }
+            }
 
             // Limpia los campos después de guardar
             clearFields()
         }
-
-        // Agregar acción para el botón "Agregar Imagen"
-        buttonAddImage.setOnClickListener {
-            if (imageInputCount < 5) { // Limitar a 5 campos de imagen
-                imageInputCount++
-                addImageInput(imageInputCount)
-            } else {
-                Toast.makeText(requireContext(), "No se pueden agregar más de 5 imágenes.", Toast.LENGTH_SHORT).show()
-                buttonAddImage.isEnabled = false // Deshabilitar el botón después de 5 campos
-            }
-        }
     }
-
-    private fun addImageInput(imageNumber: Int) {
-        val newEditText = EditText(requireContext())
-        newEditText.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        newEditText.hint = "URL de la Imagen $imageNumber"
-        newEditText.inputType = InputType.TYPE_TEXT_VARIATION_URI
-        newEditText.setSingleLine()
-        newEditText.id = View.generateViewId()
-        imageInputLayout.addView(newEditText)
-    }
-
     private fun clearFields() {
         editTextNombre.text.clear()
         editTextUbicacion.text.clear()

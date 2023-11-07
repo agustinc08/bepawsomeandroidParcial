@@ -44,7 +44,7 @@ class Home : Fragment() {
                 for (animalSnapshot in snapshot.children) {
                     val animal = animalSnapshot.getValue(Animal::class.java)
                     if (animal != null) {
-                        val customView = createCustomAnimalView(animal)
+                        val customView = createCustomAnimalView(animalSnapshot.key!!, animal)
                         animalButtonsLayout.addView(customView)
                     }
                 }
@@ -56,14 +56,13 @@ class Home : Fragment() {
         })
     }
 
-    private fun createCustomAnimalView(animal: Animal): View {
+    private fun createCustomAnimalView(animalId: String, animal: Animal): View {
         val customView = layoutInflater.inflate(R.layout.custom_animal_view, null)
         val nameTextView: TextView = customView.findViewById(R.id.animalNameTextView)
         val breedTextView: TextView = customView.findViewById(R.id.animalBreedTextView)
         val ageTextView: TextView = customView.findViewById(R.id.animalAgeTextView)
         val sexTextView: TextView = customView.findViewById(R.id.animalSexTextView)
         val imageView = customView.findViewById<ImageView>(R.id.animalImageView)
-
 
         nameTextView.text = "Nombre: ${animal.nombre}"
         breedTextView.text = "Raza: ${animal.raza}"
@@ -75,13 +74,15 @@ class Home : Fragment() {
             .into(imageView)
 
         customView.setOnClickListener {
-       
             val intent = Intent(requireContext(), DataAnimalActivity::class.java)
+
+            // Pasar el ID del perro a DataAnimalActivity
+            intent.putExtra("animalId", animalId)
+            println("Animal ID: $animalId") // Imprimir el ID antes de iniciar la actividad
+
 
             startActivity(intent)
         }
-
-
         return customView
     }
 }

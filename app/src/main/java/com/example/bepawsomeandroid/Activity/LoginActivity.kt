@@ -1,4 +1,4 @@
-package com.example.bepawsomeandroid.Activity
+package com.example.bepawsomeandroid.activity
 
 import android.content.Context
 import android.content.Intent
@@ -9,10 +9,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.bepawsomeandroid.Activity.MainActivity
 import com.example.bepawsomeandroid.Models.ListaUsuariosPersistencia
 import com.example.bepawsomeandroid.Models.Usuario
 import com.example.bepawsomeandroid.R
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +46,14 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
                 guardarPreferencias(usuarioEncontrado)
                 val intent = Intent(this, MainActivity::class.java)
+
+                // Co rutina necesaria para crear la base de datos ( obligatioria para trabajar dentro del onClickListener)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    // Inicializa la base de datos
+
+                }
+
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Acceso Denegado", Toast.LENGTH_SHORT).show()
