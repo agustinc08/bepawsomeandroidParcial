@@ -1,12 +1,14 @@
 package com.example.bepawsomeandroid.Activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
@@ -23,6 +25,12 @@ class EditProfile : AppCompatActivity() {
     private lateinit var editTextPhone: EditText
     private lateinit var editTextImageUrl: EditText
     private lateinit var saveButton: Button
+    lateinit var nameUserCredential: String
+    lateinit var mailUserCredential: String
+    lateinit var imageUrlUserCredential: String
+    lateinit var telefonoUserCredential: String
+    lateinit var passwordUserCredential: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +42,6 @@ class EditProfile : AppCompatActivity() {
         if (jsonObjectString != null) {
             try {
                 jsonObject = JSONObject(jsonObjectString)
-                // Ahora tienes tu objeto JSON
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -42,17 +49,19 @@ class EditProfile : AppCompatActivity() {
         var gson = Gson()
         var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
 
-        var nombreUser = userObject.name
+        nameUserCredential = userObject.name
+        mailUserCredential = userObject.mail
+        imageUrlUserCredential = userObject.imageUrl
+        telefonoUserCredential = userObject.telefono
+        passwordUserCredential = userObject.password
+
         val textViewUserName = findViewById<TextView>(R.id.textViewUserName)
-        textViewUserName.text = nombreUser
+        textViewUserName.text = nameUserCredential
 
-        var imagenProfileUser = userObject.imageUrl
         val imageViewUser = findViewById<ImageView>(R.id.imageViewUserProfile) // Asegúrate de tener un ImageView en tu layout
-        if (imagenProfileUser.isNotEmpty()) {
-            Picasso.get().load(imagenProfileUser).into(imageViewUser)
+        if (imageUrlUserCredential.isNotEmpty()) {
+            Picasso.get().load(imageUrlUserCredential).into(imageViewUser)
         }
-
-
 
         editTextName = findViewById(R.id.editTextName)
         editTextPassword = findViewById(R.id.editTextPassword)
@@ -66,31 +75,67 @@ class EditProfile : AppCompatActivity() {
 
     private fun onSaveClick() {
         val name = editTextName.text.toString()
-        val password = editTextPassword.text.toString()
+        if (name.isNotBlank() && name != nameUserCredential ) {
+            nameUserCredential = name
+        }
+
         val email = editTextEmail.text.toString()
-        val phone = editTextPhone.text.toString()
+        if (email.isNotBlank() && email != mailUserCredential){
+            mailUserCredential = email
+        }
+
         val imageUrl = editTextImageUrl.text.toString()
+        if (imageUrl.isNotBlank() && imageUrl != imageUrlUserCredential){
+            imageUrlUserCredential = imageUrl
+        }
 
-        var passwordHash = ""
+        val phone = editTextPhone.text.toString()
+        if (phone.isNotBlank() && phone!= telefonoUserCredential){
+            telefonoUserCredential = phone
+        }
 
-        if(!password.isBlank() || password != ""){ passwordHash = hashPassword(password)}
+        val password = editTextPassword.text.toString()
+        if (password.isNotBlank() && password != passwordUserCredential) {
+            passwordUserCredential = password
+        }
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val userObject = User(nameUserCredential, mailUserCredential, passwordUserCredential, imageUrlUserCredential, telefonoUserCredential)
+        val jsonUser = gson.toJson(userObject)
+
+        with(sharedPreferences.edit()) {
+            putString("UserLogueado", jsonUser)
+            apply()
+        }
+
+        println(jsonUser)
+        //println("Este es el nombre nuevo" + userObject.name)
+
+        Toast.makeText(this, "${nameUserCredential} Datos Actualizados", Toast.LENGTH_SHORT).show()
+
+
 
         val profileData = JSONObject()
-        profileData.put("name", name)
-        profileData.put("password", passwordHash)
-        profileData.put("email", email)
-        profileData.put("phone", phone)
-        profileData.put("imageUrl", imageUrl)
+        profileData.put("name", nameUserCredential)
+        profileData.put("password", passwordUserCredential)
+        profileData.put("email", mailUserCredential)
+        profileData.put("phone", telefonoUserCredential)
+        profileData.put("imageUrl", imageUrlUserCredential)
 
         // Este JSON es el que enviaremos a Firebase
         val jsonString = profileData.toString()
 
-        println(jsonString)
+        //println(jsonString)
+
+        // Cierra la actividad actual
+        finish()
+
+        // Crea una nueva instancia de la actividad para recargarla
+        val intent = Intent(this, EditProfile::class.java)
+        startActivity(intent)
+
     }
 
-    private fun hashPassword(password: String): String {
-        val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
-        return bytes.joinToString("") { "%02x".format(it) }
-    }
 
 }
