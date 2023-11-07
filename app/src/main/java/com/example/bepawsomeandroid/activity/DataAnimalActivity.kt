@@ -36,7 +36,7 @@ class DataAnimalActivity : AppCompatActivity() {
         // Verificar que animalId no sea nulo antes de usarlo en Firebase Database
         if (animalId != null) {
             // Inicializar la referencia a la base de datos
-            databaseReference = FirebaseDatabase.getInstance().reference.child("publicaciones").child("animales").child(animalId)
+            databaseReference = FirebaseDatabase.getInstance().reference.child("animales").child(animalId)
 
             // Obtener y mostrar los datos del animal desde Firebase
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -50,6 +50,7 @@ class DataAnimalActivity : AppCompatActivity() {
                         // Mostrar la imagen grande antes que el nombre y la edad
                         nameTextView.text = "Nombre: ${animal.nombre}"
                         ageTextView.text = "Edad: ${animal.edad}"
+                        sexTextView.text = "Sexo: ${animal.sexo}"
                         sexTextView.text = "Sexo: ${animal.sexo}"
                     }
                 }

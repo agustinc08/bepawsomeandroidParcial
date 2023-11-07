@@ -43,6 +43,7 @@ class Home : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (animalSnapshot in snapshot.children) {
                     val animal = animalSnapshot.getValue(Animal::class.java)
+                    println("Error al leer datos desde Firebase: ${animal}")
                     if (animal != null) {
                         val customView = createCustomAnimalView(animalSnapshot.key!!, animal)
                         animalButtonsLayout.addView(customView)
