@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navegation: BottomNavigationView
     private lateinit var databaseReference: DatabaseReference
 
-    var sharedPreferences:SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+    //var sharedPreferences:SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
 
     private val mOnNavMenu = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -69,8 +69,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       var nombreUsuario: String? = sharedPreferences.getString("nombreUsuario","")
-        println(nombreUsuario)
+        var sharedPreferences: SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+        var nombreUsuario: String? = sharedPreferences.getString("nombreUsuario", "")
+        println("ESTE ES EL DE SHARED PREFRENCESSS!! " +nombreUsuario)
 
 
         val searchView = findViewById<SearchView>(R.id.searchView)

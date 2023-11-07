@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (usuarioEncontrado != null) {
                 Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
-                //guardarPreferencias(usuarioEncontrado)
+                guardarPreferencias(usuarioEncontrado)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else {
@@ -63,14 +63,14 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun cargarPreferencias(){
-        var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
-        var nombreUsuario: String? = preferencias.getString("nombreUsuario","No Esta Cargado")
-        var mailUsuario: String? = preferencias.getString("mailUsuario","No Esta Cargado")
-        var userLogueado: Boolean? = preferencias.getBoolean("userLogueado",false)
+   // fun cargarPreferencias(){
+       //var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+       // var nombreUsuario: String? = preferencias.getString("nombreUsuario","No Esta Cargado")
+       // var mailUsuario: String? = preferencias.getString("mailUsuario","No Esta Cargado")
+       // var userLogueado: Boolean? = preferencias.getBoolean("userLogueado",false)
 
 
-    }
+  //  }
 
     fun guardarPreferencias(usuarioEncontrado:Usuario){
         var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
