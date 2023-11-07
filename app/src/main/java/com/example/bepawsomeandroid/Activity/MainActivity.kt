@@ -12,10 +12,14 @@ import com.example.bepawsomeandroid.Fragment.Adoption
 import com.example.bepawsomeandroid.Fragment.Favorite
 import com.example.bepawsomeandroid.Fragment.Home
 import com.example.bepawsomeandroid.Fragment.Profile
+import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
+import org.json.JSONException
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -78,14 +82,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var sharedPreferences: SharedPreferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE)
-        var nameUser: String? = sharedPreferences.getString("nameUser", "")
-        var mailUser: String? = sharedPreferences.getString("mailUser", "")
-        var imageUrlUser: String? = sharedPreferences.getString("imageUrlUser","")
-        var passwordUser: String? = sharedPreferences.getString("passwordUser","")
 
 
-        println("Este es todo el Shared Preferences"+ nameUser + " " + mailUser +" " + imageUrlUser + " " + passwordUser)
+        var sharedPreferences: SharedPreferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
+        //var nameUser: String? = sharedPreferences.getString("nameUser", "")
+        //var mailUser: String? = sharedPreferences.getString("mailUser", "")
+        //var imageUrlUser: String? = sharedPreferences.getString("imageUrlUser","")
+        //var passwordUser: String? = sharedPreferences.getString("passwordUser","")
+
+
+        val jsonObjectString = sharedPreferences.getString("UserLogueado", null)
+
+        var jsonObject: JSONObject? = null
+
+        if (jsonObjectString != null) {
+            try {
+                jsonObject = JSONObject(jsonObjectString)
+                // Ahora tienes tu objeto JSON
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                }
+        }
+
+        var gson = Gson()
+
+        var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
+
+        println(userObject.name)
 
         val searchView = findViewById<SearchView>(R.id.searchView)
 

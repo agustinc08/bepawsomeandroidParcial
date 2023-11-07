@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
   //  }
 
     fun guardarPreferencias(userEncontrado: User){
-        var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+        var preferencias:SharedPreferences=getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = preferencias.edit()
 
         var nameUser = userEncontrado.name
@@ -85,12 +85,10 @@ class LoginActivity : AppCompatActivity() {
         var telefonoUser = userEncontrado.telefono
         var passwordUser = userEncontrado.password
 
-        editor.putString("nameUser" , nameUser)
-        editor.putString("mailUser", mailUser)
-        editor.putString("imageUrlUser", imageUrlUser)
-        editor.putString("telefonoUser", telefonoUser)
-        editor.putString("passwordUser", passwordUser)
-        editor.putBoolean("userLogueado",true)
+        var jsonObjectUsuario = "{\"name\":\"$nameUser\",\"mail\":\"$mailUser\",\"imageUrl\":\"$imageUrlUser\",\"telefono\":\"$telefonoUser\",\"password\":\"$passwordUser\"}"
+
+        editor.putString("UserLogueado",jsonObjectUsuario)
+
         editor.commit()
     }
 
