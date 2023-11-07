@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Publicación nueva"
+                android:text="New Publication"
                 android:textSize="24sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"/>
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextNombre"
-                android:hint="Nombre"
+                android:hint="Name"
                 android:inputType="text"
                 android:layout_margin="16dp"/>
 
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextUbicacion"
-                android:hint="Ubicación"
+                android:hint="Ubication"
                 android:inputType="text"
                 android:layout_margin="16dp"/>
 
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/razaPerro"
-                android:hint="Raza"
+                android:hint="Breed"
                 android:inputType="text"
                 android:layout_margin="16dp"/>
 
@@ -60,19 +60,19 @@
                     android:id="@+id/radioButtonMacho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Macho"/>
+                    android:text="Male"/>
                 <RadioButton
                     android:id="@+id/radioButtonHembra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hembra"/>
+                    android:text="Female"/>
             </RadioGroup>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextPeso"
-                android:hint="Peso (en kg)"
+                android:hint="Weight (kg)"
                 android:inputType="numberDecimal"
                 android:layout_margin="16dp"/>
 
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextEdad"
-                android:hint="Edad"
+                android:hint="Age"
                 android:inputType="number"
                 android:layout_margin="16dp"/>
 
@@ -93,7 +93,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="URL de la Imagen 1"
+                    android:hint="URL Image 1"
                     android:inputType="text"
                     android:layout_margin="16dp"
                     android:id="@+id/editTextImagen1"/>
@@ -128,16 +128,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/buttonGuardar"
-                android:text="Guardar Publicación"
+                android:text="Save Publication"
                 android:layout_margin="16dp"
                />
-            <Button
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/extra1"
-                android:text="Guardar Publicación"
+                android:hint=""
+                android:inputType="text"
                 android:layout_margin="16dp"
-                />
+            />
 
         </LinearLayout>
 

@@ -24,4 +24,10 @@
         android:icon="@drawable/ic_publication"
         android:title="PUBLICATION"
         />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_setting"
+        android:title="PROFILE"
+        />
 </menu>
