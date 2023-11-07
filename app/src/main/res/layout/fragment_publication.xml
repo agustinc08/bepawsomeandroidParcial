@@ -90,13 +90,6 @@
                 android:orientation="vertical"
                 android:id="@+id/imageInputLayout">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/buttonAddImage"
-                    android:text="Agregar Imagen"
-                    android:layout_margin="16dp"/>
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -104,6 +97,30 @@
                     android:inputType="text"
                     android:layout_margin="16dp"
                     android:id="@+id/editTextImagen1"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="URL de la Imagen 2"
+                    android:inputType="text"
+                    android:layout_margin="16dp"
+                    android:id="@+id/editTextImagen2"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="URL de la Imagen 3"
+                    android:inputType="text"
+                    android:layout_margin="16dp"
+                    android:id="@+id/editTextImagen3"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="URL de la Imagen 4"
+                    android:inputType="text"
+                    android:layout_margin="16dp"
+                    android:id="@+id/editTextImagen4"/>
 
             </LinearLayout>
 
