@@ -53,6 +53,7 @@ class DataAnimalActivity : AppCompatActivity() {
                         sexTextView.text = "Sexo: ${animal.sexo}"
                         sexTextView.text = "Raza: ${animal.raza}"
                         sexTextView.text = "SubRaza: ${animal.subraza}"
+                        sexTextView.text = "Sexo: ${animal.sexo}"
                     }
                 }
 
