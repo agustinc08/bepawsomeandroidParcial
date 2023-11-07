@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.bepawsomeandroid.Activity.MainActivity
 import com.example.bepawsomeandroid.Models.ListaUsuariosPersistencia
-import com.example.bepawsomeandroid.Models.Usuario
+import com.example.bepawsomeandroid.Models.User
 import com.example.bepawsomeandroid.R
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -31,16 +31,13 @@ class LoginActivity : AppCompatActivity() {
         val twitterView: ImageView = findViewById(R.id.twitterView)
         val listaUsuarios = ListaUsuariosPersistencia()
 
-        //cargarPreferencias()
 
-        // nombreUsuario: Tester
-        // contrasenia: Tester
 
         loginBtn.setOnClickListener {
             val nombreUsuarioInput = nombreUsuario.text.toString()
             val contraseniaInput = contrasenia.text.toString()
 
-            val usuarioEncontrado = listaUsuarios.encontrarUsuario(nombreUsuarioInput, contraseniaInput)
+            val userEncontrado = listaUsuarios.encontrarUsuario(nombreUsuarioInput, contraseniaInput)
 
             if (usuarioEncontrado != null) {
                 Toast.makeText(this, "${usuarioEncontrado.nombre} Logueado", Toast.LENGTH_SHORT).show()
@@ -57,9 +54,9 @@ class LoginActivity : AppCompatActivity() {
 
         //Aca siempre loguea con Tester
         val clickListener = View.OnClickListener {
-            val usuarioTester = listaUsuarios.obtenerTester()
-            //guardarPreferencias(usuarioTester)
-            Toast.makeText(this, "${usuarioTester.nombre} Logueado", Toast.LENGTH_SHORT).show()
+            val userTester = listaUsuarios.obtenerTester()
+            guardarPreferencias(userTester)
+            Toast.makeText(this, "${userTester.name} Logueado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -79,20 +76,19 @@ class LoginActivity : AppCompatActivity() {
 
   //  }
 
-    fun guardarPreferencias(usuarioEncontrado:Usuario){
-        var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
+    fun guardarPreferencias(userEncontrado: User){
+        var preferencias:SharedPreferences=getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = preferencias.edit()
 
+        var nameUser = userEncontrado.name
+        var mailUser = userEncontrado.mail
+        var imageUrlUser = userEncontrado.imageUrl
+        var telefonoUser = userEncontrado.telefono
+        var passwordUser = userEncontrado.password
 
-        var nombreUsuario = usuarioEncontrado.nombre
-        var mailUsuario = usuarioEncontrado.mail
+        var jsonObjectUsuario = "{\"name\":\"$nameUser\",\"mail\":\"$mailUser\",\"imageUrl\":\"$imageUrlUser\",\"telefono\":\"$telefonoUser\",\"password\":\"$passwordUser\"}"
 
-
-        editor.putString("nombreUsuario", nombreUsuario)
-        editor.putString("mailUsuario", mailUsuario)
-
-        editor.putBoolean("userLogueado",true)
-
+        editor.putString("UserLogueado",jsonObjectUsuario)
 
         editor.commit()
     }

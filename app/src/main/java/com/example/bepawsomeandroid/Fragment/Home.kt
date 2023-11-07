@@ -91,7 +91,7 @@ class Home : Fragment() {
         nameTextView.text = "Nombre: ${animal.nombre}"
         breedTextView.text = "Raza: ${animal.raza}"
         ageTextView.text = "Edad: ${animal.edad}"
-        sexTextView.text = "Sexo: ${animal.sexo}"
+
 
         Glide.with(this)
             .load(animal.imgUrl1)
