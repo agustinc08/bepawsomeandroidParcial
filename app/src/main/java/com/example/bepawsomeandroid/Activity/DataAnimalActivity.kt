@@ -12,7 +12,6 @@ import com.example.bepawsomeandroid.R
 class DataAnimalActivity : AppCompatActivity() {
     private lateinit var animalImageView: ImageView
     private lateinit var nameTextView: TextView
-    private lateinit var breedTextView: TextView
     private lateinit var ageTextView: TextView
     private lateinit var sexTextView: TextView
 
@@ -25,7 +24,6 @@ class DataAnimalActivity : AppCompatActivity() {
         // Inicializar las vistas
         animalImageView = findViewById(R.id.animalImageView)
         nameTextView = findViewById(R.id.nameTextView)
-        breedTextView = findViewById(R.id.breedTextView)
         ageTextView = findViewById(R.id.ageTextView)
         sexTextView = findViewById(R.id.sexTextView)
 
@@ -45,14 +43,15 @@ class DataAnimalActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val animal = snapshot.getValue(Animal::class.java)
                     if (animal != null) {
-                        nameTextView.text = "Nombre: ${animal.nombre}"
-                        breedTextView.text = "Raza: ${animal.raza}"
-                        ageTextView.text = "Edad: ${animal.edad}"
-                        sexTextView.text = "Sexo: ${animal.sexo}"
-
                         Glide.with(this@DataAnimalActivity)
                             .load(animal.imgUrl1)
                             .into(animalImageView)
+
+                        // Mostrar la imagen grande antes que el nombre y la edad
+                        nameTextView.text = "Nombre: ${animal.nombre}"
+                        ageTextView.text = "Edad: ${animal.edad}"
+                        sexTextView.text = "Sexo: ${animal.sexo}"
+                        sexTextView.text = "Sexo: ${animal.sexo}"
                     }
                 }
 
