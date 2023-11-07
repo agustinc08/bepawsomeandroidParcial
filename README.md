@@ -20,6 +20,8 @@ El proyecto tiene como objetivo crear una plataforma simple en Android para la a
 
 ### Funcionalidades Básicas
 
+-**Login** : Con los datos us: Admin y pass: Admin se puede ingresar. De otro modo el boton de logueo con google ingresa desde el usuario tester.
+
 - **Guardar en Favoritos:** Los usuarios pueden marcar y guardar los animales que les interesan para verlos más tarde.
 
 - **Mantenimiento de Sesión:** Los datos de sesión se almacenan en SharedPreferences para mantener a los usuarios conectados.
