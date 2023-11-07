@@ -58,7 +58,7 @@ class EditProfile : AppCompatActivity() {
         val textViewUserName = findViewById<TextView>(R.id.textViewUserName)
         textViewUserName.text = nameUserCredential
 
-        val imageViewUser = findViewById<ImageView>(R.id.imageViewUserProfile) // Asegúrate de tener un ImageView en tu layout
+        val imageViewUser = findViewById<ImageView>(R.id.imageViewUserProfile)
         if (imageUrlUserCredential.isNotEmpty()) {
             Picasso.get().load(imageUrlUserCredential).into(imageViewUser)
         }
@@ -110,32 +110,13 @@ class EditProfile : AppCompatActivity() {
         }
 
         println(jsonUser)
-        //println("Este es el nombre nuevo" + userObject.name)
 
         Toast.makeText(this, "${nameUserCredential} Datos Actualizados", Toast.LENGTH_SHORT).show()
 
-
-
-        val profileData = JSONObject()
-        profileData.put("name", nameUserCredential)
-        profileData.put("password", passwordUserCredential)
-        profileData.put("email", mailUserCredential)
-        profileData.put("phone", telefonoUserCredential)
-        profileData.put("imageUrl", imageUrlUserCredential)
-
-        // Este JSON es el que enviaremos a Firebase
-        val jsonString = profileData.toString()
-
-        //println(jsonString)
-
-        // Cierra la actividad actual
         finish()
 
-        // Crea una nueva instancia de la actividad para recargarla
         val intent = Intent(this, EditProfile::class.java)
         startActivity(intent)
-
     }
-
 
 }

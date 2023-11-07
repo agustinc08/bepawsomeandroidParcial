@@ -66,14 +66,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-   // fun cargarPreferencias(){
-       //var preferencias:SharedPreferences=getSharedPreferences("credenciales", Context.MODE_PRIVATE)
-       // var nombreUsuario: String? = preferencias.getString("nombreUsuario","No Esta Cargado")
-       // var mailUsuario: String? = preferencias.getString("mailUsuario","No Esta Cargado")
-       // var userLogueado: Boolean? = preferencias.getBoolean("userLogueado",false)
-
-
-  //  }
 
     fun guardarPreferencias(userEncontrado: User){
         var preferencias:SharedPreferences=getSharedPreferences("Credenciales", Context.MODE_PRIVATE)
