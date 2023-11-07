@@ -16,7 +16,7 @@
           android:layout_marginEnd="50dp"
           android:layout_marginBottom="50dp"
           android:gravity="center"
-          android:text="Bienvenido a BePawsome"
+          android:text="Welcome to BePawsome"
           android:textColor="@color/purple_700"
           android:textSize="35dp"
           android:textStyle="bold"

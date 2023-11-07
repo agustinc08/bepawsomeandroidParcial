@@ -7,6 +7,7 @@ import androidx.fragment.app.replace
 import com.example.bepawsomeandroid.Fragment.Adoption
 import com.example.bepawsomeandroid.Fragment.Favorite
 import com.example.bepawsomeandroid.Fragment.Home
+import com.example.bepawsomeandroid.Fragment.Profile
 import com.example.bepawsomeandroid.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
@@ -49,6 +50,15 @@ class MainActivity : AppCompatActivity() {
             R.id.publication -> {
                 supportFragmentManager.commit {
                     replace<Publication>(R.id.frame_container)
+                    setReorderingAllowed(true)
+                    addToBackStack("replacement")
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.profile -> {
+                supportFragmentManager.commit {
+                    replace<Profile>(R.id.frame_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }

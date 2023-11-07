@@ -33,24 +33,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            android:text="Nombre: Nombre del animal" />
+            android:text="Name: Name of Animal" />
 
         <TextView
             android:id="@+id/animalBreedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Raza: Raza del animal" />
+            android:text="Breed: Breed of animal" />
 
         <TextView
             android:id="@+id/animalAgeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edad: Edad del animal" />
+            android:text="Age: Age of animal" />
 
         <TextView
             android:id="@+id/animalSexTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sexo: Sexo del animal" />
+            android:text="Sex: Sex of animals" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

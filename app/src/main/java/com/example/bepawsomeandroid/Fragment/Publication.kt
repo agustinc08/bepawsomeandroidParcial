@@ -89,7 +89,7 @@ class Publication : Fragment() {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        newEditText.hint = "URL de la Imagen $imageNumber"
+        newEditText.hint = "URL Image $imageNumber"
         newEditText.inputType = InputType.TYPE_TEXT_VARIATION_URI
         newEditText.setSingleLine()
         newEditText.id = View.generateViewId()
