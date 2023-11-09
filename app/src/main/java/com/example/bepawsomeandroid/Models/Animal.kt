@@ -1,5 +1,7 @@
 package com.example.bepawsomeandroid.Models
 
+import android.widget.Spinner
+
 data class Animal(
     var nombre: String = "",
     var ubicacion: String = "",
@@ -10,7 +12,7 @@ data class Animal(
     var subraza: String = "",
     var usuarioId: String = "",
 
-) {
+    ) {
     // Constructor sin argumentos necesario para Firebase
     constructor() : this("", "", "", 0.0, 0, "", "", "")
 }

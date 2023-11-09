@@ -1,9 +1,6 @@
 package com.example.bepawsomeandroid.Fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,14 +110,13 @@ class Publication : Fragment() {
             // Obtener los valores de los campos de entrada
             val nombre = editTextNombre.text.toString()
             val ubicacion = editTextUbicacion.text.toString()
-            val raza = editTextRaza.text.toString()
+            val raza = spinnerRazas.selectedItem.toString()
             val sexo = if (radioButtonMacho.isChecked) "Macho" else "Hembra"
             val peso = editTextPeso.text.toString().toDoubleOrNull() ?: 0.0
             val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
 
-
             // Crear una instancia de Animal con los datos ingresados por el usuario
-            val nuevoAnimal = Animal("nombre", "ubicacion", "sexo", 0.0, 0, "raza", "subraza", "usuarioId")
+            val nuevoAnimal = Animal(nombre, ubicacion, sexo, peso, edad, raza)
 
             // Guardar el animal en Firebase
             val animalesRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("animales")
