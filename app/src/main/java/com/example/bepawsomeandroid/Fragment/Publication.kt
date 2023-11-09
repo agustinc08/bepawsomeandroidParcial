@@ -1,6 +1,7 @@
 package com.example.bepawsomeandroid.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,8 +43,7 @@ class Publication : Fragment() {
     private lateinit var buttonGuardar: Button
     private lateinit var imageInputLayout: LinearLayout
     private lateinit var spinnerRazas: Spinner
-    private lateinit var spinnerSubrazas: Spinner
-    private lateinit var subrazaInputLayout: LinearLayout
+    private lateinit var spinnerSubRazas: Spinner
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://dog.ceo/api/")
@@ -81,54 +81,8 @@ class Publication : Fragment() {
         editTextEdad = view.findViewById(R.id.editTextEdad)
         buttonGuardar = view.findViewById(R.id.buttonGuardar)
         imageInputLayout = view.findViewById(R.id.imageInputLayout)
-
-        val publicationList = JSONArray()
-
         spinnerRazas = view.findViewById(R.id.spinnerRazas)
-        spinnerSubrazas = view.findViewById(R.id.spinnerSubrazas)
-        subrazaInputLayout = view.findViewById(R.id.subrazaInputLayout)
-
-        spinnerRazas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedRaza = spinnerRazas.selectedItem.toString()
-                animalViewModel.tieneSubrazas(selectedRaza) { tieneSubrazas ->
-                    if (tieneSubrazas) {
-                        // Mostrar el Spinner de subrazas y cargar las subrazas correspondientes
-                        subrazaInputLayout.visibility = View.VISIBLE
-                        cargarSubrazas(selectedRaza)
-                    } else {
-                        // Ocultar el Spinner de subrazas si no hay subrazas
-                        subrazaInputLayout.visibility = View.GONE
-                    }
-                }
-            }
-
-            private fun cargarSubrazas(raza: String) {
-                animalViewModel.obtenerSubrazasDeApi(raza).enqueue(object : Callback<SubBreedsResponse> {
-                    override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
-                        if (response.isSuccessful) {
-                            val subBreedsResponse = response.body()
-                            subBreedsResponse?.subBreeds?.let { subrazasList ->
-                                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, subrazasList)
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                                spinnerSubrazas.adapter = adapter
-                            }
-                        } else {
-                            // Manejar errores de la respuesta de la API para subrazas
-                        }
-                    }
-
-                    override fun onFailure(call: Call<SubBreedsResponse>, t: Throwable) {
-                        // Manejar errores de la llamada a la API para subrazas
-                    }
-                })
-            }
-
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // No hacer nada cuando no se selecciona nada en el Spinner de razas
-            }
-        }
+        spinnerSubRazas = view.findViewById(R.id.spinnerSubRazas)
 
         apiService.getBreeds().enqueue(object : Callback<DogBreedsResponse> {
             override fun onResponse(call: Call<DogBreedsResponse>, response: Response<DogBreedsResponse>) {

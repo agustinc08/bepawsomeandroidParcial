@@ -50,7 +50,7 @@ class AnimalViewModel : ViewModel() {
             override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
                 if (response.isSuccessful) {
                     val subBreedsResponse = response.body()
-                    val tieneSubrazas = !subBreedsResponse?.subBreeds.isNullOrEmpty()
+                    val tieneSubrazas = !subBreedsResponse?.message.isNullOrEmpty()
                     callback(tieneSubrazas)
                 } else {
                     // Manejar errores de la respuesta de la API para subrazas
