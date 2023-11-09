@@ -7,14 +7,20 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.bepawsomeandroid.Api.DogApiService
+import com.example.bepawsomeandroid.Api.DogBreedsResponse
+import com.example.bepawsomeandroid.Api.SubBreedsResponse
 import com.example.bepawsomeandroid.Models.Animal
 import com.example.bepawsomeandroid.R
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
@@ -22,9 +28,13 @@ import com.example.bepawsomeandroid.ViewModels.AnimalViewModelFactory
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONArray
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class Publication : Fragment() {
-
     private lateinit var editTextNombre: EditText
     private lateinit var editTextUbicacion: EditText
     private lateinit var editTextRaza: EditText
@@ -34,9 +44,19 @@ class Publication : Fragment() {
     private lateinit var editTextPeso: EditText
     private lateinit var editTextEdad: EditText
     private lateinit var buttonGuardar: Button
-    private lateinit var buttonAddImage: Button
     private lateinit var imageInputLayout: LinearLayout
-    private var imageInputCount = 1
+    private lateinit var spinnerRazas: Spinner
+    private lateinit var spinnerSubRazas: Spinner
+
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("https://dog.ceo/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val apiService: DogApiService by lazy {
+        retrofit.create(DogApiService::class.java)
+    }
 
     private val animalViewModel: AnimalViewModel by lazy {
         ViewModelProvider(this, AnimalViewModelFactory()).get(AnimalViewModel::class.java)
@@ -49,23 +69,15 @@ class Publication : Fragment() {
         return inflater.inflate(R.layout.fragment_publication, container, false)
     }
 
+    // En el método onViewCreated, después de inicializar otras vistas, inicializa el Spinner y carga los datos
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val editTextImagen1 = view.findViewById<EditText>(R.id.editTextImagen1)
-
-        editTextImagen1.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                // Actualizar imgUrl1 cuando el usuario ingrese una URL en el primer campo de imagen
-                var imgUrl1 = s.toString()
-            }
-        })
 
         // Buscar las vistas por ID
+        spinnerSubRazas = view.findViewById(R.id.spinnerSubRazas)
+        spinnerSubRazas.visibility = View.GONE
+        spinnerSubRazas = view.findViewById(R.id.spinnerSubRazas)
         editTextNombre = view.findViewById(R.id.editTextNombre)
         editTextUbicacion = view.findViewById(R.id.editTextUbicacion)
         editTextRaza = view.findViewById(R.id.razaPerro)
@@ -79,6 +91,57 @@ class Publication : Fragment() {
 
         val publicationList = JSONArray()
 
+
+        // En tu fragmento o actividad
+        apiService.getBreeds().enqueue(object : Callback<DogBreedsResponse> {
+            override fun onResponse(call: Call<DogBreedsResponse>, response: Response<DogBreedsResponse>) {
+                if (response.isSuccessful) {
+                    val breedsResponse = response.body()
+                    val breedsList = breedsResponse?.message?.keys?.toList() ?: emptyList()
+                    // Llena el Spinner de razas con las razas obtenidas
+                    val breedAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breedsList)
+                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerRazas.adapter = breedAdapter
+                } else {
+                    // Manejar errores de la respuesta de la API para razas
+                }
+            }
+
+            override fun onFailure(call: Call<DogBreedsResponse>, t: Throwable) {
+                // Manejar errores de la llamada a la API para razas
+            }
+        })
+
+        spinnerRazas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedBreed = parent?.getItemAtPosition(position).toString()
+
+                apiService.getSubBreeds(selectedBreed).enqueue(object : Callback<SubBreedsResponse> {
+                    override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
+                        if (response.isSuccessful) {
+                            val subBreedsResponse = response.body()
+                            val subBreeds = subBreedsResponse?.subBreeds ?: emptyList()
+                            // Llena el Spinner de subrazas con las subrazas obtenidas
+                            val subBreedAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, subBreeds)
+                            subBreedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            spinnerSubRazas.adapter = subBreedAdapter
+                        } else {
+                            // Manejar errores de la respuesta de la API para subrazas
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SubBreedsResponse>, t: Throwable) {
+                        // Manejar errores de la llamada a la API para subrazas
+                    }
+                })
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Manejar caso en el que no se selecciona ninguna raza
+            }
+        }
+
+
         buttonGuardar.setOnClickListener {
             // Obtener los valores de los campos de entrada
             val nombre = editTextNombre.text.toString()
@@ -88,14 +151,9 @@ class Publication : Fragment() {
             val peso = editTextPeso.text.toString().toDoubleOrNull() ?: 0.0
             val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
 
-            // Obtener las URL de las imágenes desde los campos de texto
-            val imgUrl1 = view.findViewById<EditText>(R.id.editTextImagen1).text.toString()
-            val imgUrl2 = view.findViewById<EditText>(R.id.editTextImagen2).text.toString()
-            val imgUrl3 = view.findViewById<EditText>(R.id.editTextImagen3).text.toString()
-            val imgUrl4 = view.findViewById<EditText>(R.id.editTextImagen4).text.toString()
 
             // Crear una instancia de Animal con los datos ingresados por el usuario
-            val nuevoAnimal = Animal(nombre, ubicacion, sexo, peso, edad, raza, imgUrl1, imgUrl2, imgUrl3, imgUrl4)
+            val nuevoAnimal = Animal("nombre", "ubicacion", "sexo", 0.0, 0, "raza", "subraza", "usuarioId")
 
             // Guardar el animal en Firebase
             val animalesRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("animales")

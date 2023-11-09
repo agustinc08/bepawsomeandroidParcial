@@ -3,8 +3,12 @@ package com.example.bepawsomeandroid.Api
 import com.example.bepawsomeandroid.Models.Animal
 import retrofit2.http.GET
 import retrofit2.Call
+import retrofit2.http.Path
 
 interface DogApiService {
     @GET("breeds/list/all")
-    fun getAnimals(): Call<Animal>
+    fun getBreeds(): Call<DogBreedsResponse>
+
+    @GET("breed/{breed}/list")
+    fun getSubBreeds(@Path("breed") breed: String): Call<SubBreedsResponse>
 }

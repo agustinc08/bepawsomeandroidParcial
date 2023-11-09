@@ -52,14 +52,24 @@ class Home : Fragment() {
         if (jsonObjectString != null) {
             try {
                 jsonObject = JSONObject(jsonObjectString)
+                val name = jsonObject.getString("name")
+                val imageUrl = jsonObject.getString("imageUrl")
+                // Crea el objeto User con los datos obtenidos
+                val userObject = User(name, imageUrl)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
         }
         var gson = Gson()
         var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
-        nameUserCredential = userObject.name
-        imageUrlUserCredential = userObject.imageUrl
+
+        if (userObject != null) {
+            nameUserCredential = userObject.name
+            imageUrlUserCredential = userObject.imageUrl
+        } else {
+            // Maneja el caso en el que userObject es nulo, por ejemplo, muestra un mensaje de error.
+            println("Error: userObject is null")
+        }
 
         val textViewUserName = view.findViewById<TextView>(R.id.textViewNombreUsuario)
         textViewUserName.text = nameUserCredential
@@ -82,10 +92,12 @@ class Home : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (animalSnapshot in snapshot.children) {
                     val animal = animalSnapshot.getValue(Animal::class.java)
-                    println("Error al leer datos desde Firebase: ${animal}")
                     if (animal != null) {
                         val customView = createCustomAnimalView(animalSnapshot.key!!, animal)
                         animalButtonsLayout.addView(customView)
+                    } else {
+                        // Handle the case where the animal object is null, for example, log an error message.
+                        println("Error: Animal object is null.")
                     }
                 }
             }
@@ -101,30 +113,28 @@ class Home : Fragment() {
     private fun createCustomAnimalView(animalId: String, animal: Animal): View {
         val customView = layoutInflater.inflate(R.layout.custom_animal_view, null)
         val nameTextView: TextView = customView.findViewById(R.id.animalNameTextView)
-        val breedTextView: TextView = customView.findViewById(R.id.animalBreedTextView)
+        val razaTextView: TextView = customView.findViewById(R.id.animalBreedTextView)
         val ageTextView: TextView = customView.findViewById(R.id.animalAgeTextView)
         val sexTextView: TextView = customView.findViewById(R.id.animalSexTextView)
+        val subRazaTextView: TextView = customView.findViewById(R.id.animalSubBreedTextView) // Corregido aquí
         val imageView = customView.findViewById<ImageView>(R.id.animalImageView)
 
         nameTextView.text = "Nombre: ${animal.nombre}"
-        breedTextView.text = "Raza: ${animal.raza}"
+        razaTextView.text = "Raza: ${animal.raza}"
+        subRazaTextView.text = "Subraza: ${animal.subraza}" // Corregido aquí
         ageTextView.text = "Edad: ${animal.edad}"
         sexTextView.text = "Sexo: ${animal.sexo}"
 
         Glide.with(this)
-            .load(animal.imgUrl1)
+            .load(animal) // Esta línea podría necesitar ajustes dependiendo de tu implementación de Glide
             .into(imageView)
 
         customView.setOnClickListener {
             val intent = Intent(requireContext(), DataAnimalActivity::class.java)
-
-            // Pasar el ID del perro a DataAnimalActivity
             intent.putExtra("animalId", animalId)
-            println("Animal ID: $animalId") // Imprimir el ID antes de iniciar la actividad
-
-
+            println("Animal ID: $animalId")
             startActivity(intent)
         }
         return customView
-        }
+    }
 }

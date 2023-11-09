@@ -11,12 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,37 +96,17 @@
                 android:orientation="vertical"
                 android:id="@+id/imageInputLayout">
 
-                <EditText
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/spinnerRazas"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="URL Image 1"
-                    android:inputType="text"
-                    android:layout_margin="16dp"
-                    android:id="@+id/editTextImagen1"/>
+                    android:prompt="@string/select_breed" />
 
-                <EditText
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/spinnerSubRazas"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="URL de la Imagen 2"
-                    android:inputType="text"
-                    android:layout_margin="16dp"
-                    android:id="@+id/editTextImagen2"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="URL de la Imagen 3"
-                    android:inputType="text"
-                    android:layout_margin="16dp"
-                    android:id="@+id/editTextImagen3"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="URL de la Imagen 4"
-                    android:inputType="text"
-                    android:layout_margin="16dp"
-                    android:id="@+id/editTextImagen4"/>
+                    android:prompt="@string/select_subbreed" />
 
             </LinearLayout>
 
