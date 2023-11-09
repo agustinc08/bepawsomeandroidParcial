@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.bepawsomeandroid.Api.DogApiService
 import com.example.bepawsomeandroid.Api.DogBreedsResponse
+import com.example.bepawsomeandroid.Api.SubBreedsResponse
 import com.example.bepawsomeandroid.Models.Animal
 import com.example.bepawsomeandroid.R
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
@@ -32,16 +34,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 class Publication : Fragment() {
     private lateinit var editTextNombre: EditText
     private lateinit var editTextUbicacion: EditText
-    private lateinit var editTextRaza: EditText
     private lateinit var radioGroupSexo: RadioGroup
     private lateinit var radioButtonMacho: RadioButton
     private lateinit var radioButtonHembra: RadioButton
     private lateinit var editTextPeso: EditText
     private lateinit var editTextEdad: EditText
     private lateinit var buttonGuardar: Button
-    private lateinit var buttonAddImage: Button
     private lateinit var imageInputLayout: LinearLayout
     private lateinit var spinnerRazas: Spinner
+    private lateinit var spinnerSubrazas: Spinner
+    private lateinit var subrazaInputLayout: LinearLayout
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://dog.ceo/api/")
@@ -72,7 +74,6 @@ class Publication : Fragment() {
         spinnerRazas = view.findViewById(R.id.spinnerRazas)
         editTextNombre = view.findViewById(R.id.editTextNombre)
         editTextUbicacion = view.findViewById(R.id.editTextUbicacion)
-        editTextRaza = view.findViewById(R.id.razaPerro)
         radioGroupSexo = view.findViewById(R.id.radioGroupSexo)
         radioButtonMacho = view.findViewById(R.id.radioButtonMacho)
         radioButtonHembra = view.findViewById(R.id.radioButtonHembra)
@@ -84,6 +85,50 @@ class Publication : Fragment() {
         val publicationList = JSONArray()
 
         spinnerRazas = view.findViewById(R.id.spinnerRazas)
+        spinnerSubrazas = view.findViewById(R.id.spinnerSubrazas)
+        subrazaInputLayout = view.findViewById(R.id.subrazaInputLayout)
+
+        spinnerRazas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedRaza = spinnerRazas.selectedItem.toString()
+                animalViewModel.tieneSubrazas(selectedRaza) { tieneSubrazas ->
+                    if (tieneSubrazas) {
+                        // Mostrar el Spinner de subrazas y cargar las subrazas correspondientes
+                        subrazaInputLayout.visibility = View.VISIBLE
+                        cargarSubrazas(selectedRaza)
+                    } else {
+                        // Ocultar el Spinner de subrazas si no hay subrazas
+                        subrazaInputLayout.visibility = View.GONE
+                    }
+                }
+            }
+
+            private fun cargarSubrazas(raza: String) {
+                animalViewModel.obtenerSubrazasDeApi(raza).enqueue(object : Callback<SubBreedsResponse> {
+                    override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
+                        if (response.isSuccessful) {
+                            val subBreedsResponse = response.body()
+                            subBreedsResponse?.subBreeds?.let { subrazasList ->
+                                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, subrazasList)
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                spinnerSubrazas.adapter = adapter
+                            }
+                        } else {
+                            // Manejar errores de la respuesta de la API para subrazas
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SubBreedsResponse>, t: Throwable) {
+                        // Manejar errores de la llamada a la API para subrazas
+                    }
+                })
+            }
+
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No hacer nada cuando no se selecciona nada en el Spinner de razas
+            }
+        }
 
         apiService.getBreeds().enqueue(object : Callback<DogBreedsResponse> {
             override fun onResponse(call: Call<DogBreedsResponse>, response: Response<DogBreedsResponse>) {
