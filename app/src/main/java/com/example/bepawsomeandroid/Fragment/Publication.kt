@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -20,7 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.bepawsomeandroid.Api.DogApiService
 import com.example.bepawsomeandroid.Api.DogBreedsResponse
-import com.example.bepawsomeandroid.Api.SubBreedsResponse
 import com.example.bepawsomeandroid.Models.Animal
 import com.example.bepawsomeandroid.R
 import com.example.bepawsomeandroid.ViewModels.AnimalViewModel
@@ -44,10 +42,9 @@ class Publication : Fragment() {
     private lateinit var editTextPeso: EditText
     private lateinit var editTextEdad: EditText
     private lateinit var buttonGuardar: Button
+    private lateinit var buttonAddImage: Button
     private lateinit var imageInputLayout: LinearLayout
     private lateinit var spinnerRazas: Spinner
-    private lateinit var spinnerSubRazas: Spinner
-
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://dog.ceo/api/")
@@ -75,9 +72,7 @@ class Publication : Fragment() {
 
 
         // Buscar las vistas por ID
-        spinnerSubRazas = view.findViewById(R.id.spinnerSubRazas)
-        spinnerSubRazas.visibility = View.GONE
-        spinnerSubRazas = view.findViewById(R.id.spinnerSubRazas)
+        spinnerRazas = view.findViewById(R.id.spinnerRazas)
         editTextNombre = view.findViewById(R.id.editTextNombre)
         editTextUbicacion = view.findViewById(R.id.editTextUbicacion)
         editTextRaza = view.findViewById(R.id.razaPerro)
@@ -91,55 +86,27 @@ class Publication : Fragment() {
 
         val publicationList = JSONArray()
 
+        spinnerRazas = view.findViewById(R.id.spinnerRazas)
 
-        // En tu fragmento o actividad
         apiService.getBreeds().enqueue(object : Callback<DogBreedsResponse> {
             override fun onResponse(call: Call<DogBreedsResponse>, response: Response<DogBreedsResponse>) {
                 if (response.isSuccessful) {
                     val breedsResponse = response.body()
-                    val breedsList = breedsResponse?.message?.keys?.toList() ?: emptyList()
-                    // Llena el Spinner de razas con las razas obtenidas
-                    val breedAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breedsList)
-                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinnerRazas.adapter = breedAdapter
+                    breedsResponse?.message?.let { breedsMap ->
+                        val breedList = breedsMap.keys.toList()
+                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breedList)
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        spinnerRazas.adapter = adapter
+                    }
                 } else {
-                    // Manejar errores de la respuesta de la API para razas
+                    // Manejar errores de la respuesta de la API
                 }
             }
 
             override fun onFailure(call: Call<DogBreedsResponse>, t: Throwable) {
-                // Manejar errores de la llamada a la API para razas
+                // Manejar errores de la llamada a la API
             }
         })
-
-        spinnerRazas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedBreed = parent?.getItemAtPosition(position).toString()
-
-                apiService.getSubBreeds(selectedBreed).enqueue(object : Callback<SubBreedsResponse> {
-                    override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
-                        if (response.isSuccessful) {
-                            val subBreedsResponse = response.body()
-                            val subBreeds = subBreedsResponse?.subBreeds ?: emptyList()
-                            // Llena el Spinner de subrazas con las subrazas obtenidas
-                            val subBreedAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, subBreeds)
-                            subBreedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                            spinnerSubRazas.adapter = subBreedAdapter
-                        } else {
-                            // Manejar errores de la respuesta de la API para subrazas
-                        }
-                    }
-
-                    override fun onFailure(call: Call<SubBreedsResponse>, t: Throwable) {
-                        // Manejar errores de la llamada a la API para subrazas
-                    }
-                })
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Manejar caso en el que no se selecciona ninguna raza
-            }
-        }
 
 
         buttonGuardar.setOnClickListener {

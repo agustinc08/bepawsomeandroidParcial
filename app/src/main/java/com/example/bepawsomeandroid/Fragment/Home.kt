@@ -116,12 +116,12 @@ class Home : Fragment() {
         val razaTextView: TextView = customView.findViewById(R.id.animalBreedTextView)
         val ageTextView: TextView = customView.findViewById(R.id.animalAgeTextView)
         val sexTextView: TextView = customView.findViewById(R.id.animalSexTextView)
-        val subRazaTextView: TextView = customView.findViewById(R.id.animalSubBreedTextView) // Corregido aquí
+        //val subRazaTextView: TextView = customView.findViewById(R.id.animalSubBreedTextView) // Corregido aquí
         val imageView = customView.findViewById<ImageView>(R.id.animalImageView)
 
         nameTextView.text = "Nombre: ${animal.nombre}"
         razaTextView.text = "Raza: ${animal.raza}"
-        subRazaTextView.text = "Subraza: ${animal.subraza}" // Corregido aquí
+        //subRazaTextView.text = "Subraza: ${animal.subraza}" // Corregido aquí
         ageTextView.text = "Edad: ${animal.edad}"
         sexTextView.text = "Sexo: ${animal.sexo}"
 
