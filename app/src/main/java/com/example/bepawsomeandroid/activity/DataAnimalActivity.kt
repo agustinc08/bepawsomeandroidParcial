@@ -1,5 +1,6 @@
 package com.example.bepawsomeandroid.Activity
 
+import com.example.bepawsomeandroid.Api.ImageAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,18 +15,26 @@ import com.example.bepawsomeandroid.Models.Animal
 import com.google.firebase.database.*
 import com.bumptech.glide.Glide
 import android.Manifest
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.example.bepawsomeandroid.Api.DogApiResponse
+import com.example.bepawsomeandroid.Api.RetrofitClient
 import com.example.bepawsomeandroid.R
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DataAnimalActivity : AppCompatActivity() {
     private lateinit var animalImageView: ImageView
     private lateinit var nameTextView: TextView
     private lateinit var ageTextView: TextView
-    private lateinit var sexTextView: TextView  // Agrega esta línea para inicializar sexTextView
+    private lateinit var sexTextView: TextView
     private lateinit var razaTextView: TextView
     private lateinit var subRazaTextView: TextView
+    private lateinit var imageRecyclerView: RecyclerView
+    private lateinit var imageAdapter: ImageAdapter
     private val telefonoAnimal = "123456789"
-
-
     private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +45,15 @@ class DataAnimalActivity : AppCompatActivity() {
         animalImageView = findViewById(R.id.animalImageView)
         nameTextView = findViewById(R.id.nameTextView)
         ageTextView = findViewById(R.id.ageTextView)
-        sexTextView = findViewById(R.id.sexTextView)  // Inicializa sexTextView con la vista correspondiente del layout
+        sexTextView = findViewById(R.id.sexTextView)
         razaTextView = findViewById(R.id.razaTextView)
         subRazaTextView = findViewById(R.id.subRazaTextView)
 
+
+
         // Recuperar el ID del animal de la intent
         val animalId = intent.getStringExtra("animalId")
+
 
         // Imprimir el ID del animal en la consola
         println("Animal ID: $animalId")
@@ -60,12 +72,25 @@ class DataAnimalActivity : AppCompatActivity() {
                             .load(animal)
                             .into(animalImageView)
 
+                        val animalImageUrl = animal?.imagenUrl
+                        if (!animalImageUrl.isNullOrBlank()) {
+                            Glide.with(this@DataAnimalActivity)
+                                .load(animalImageUrl)
+                                .into(animalImageView)
+                        } else {
+                            // Maneja el caso en el que la URL de la imagen es nula o vacía
+                        }
+
                         // Mostrar la imagen grande antes que el nombre y la edad
                         nameTextView.text = "Nombre: ${animal.nombre}"
                         ageTextView.text = "Edad: ${animal.edad}"
                         razaTextView.text = "Raza: ${animal.raza}"
-                        subRazaTextView.text = "SubRaza: ${animal.subraza}"  // Asegúrate de tener un atributo "subraza" en tu clase Animal
+                        subRazaTextView.text = "SubRaza: ${animal.subraza}"
                         sexTextView.text = "Sexo: ${animal.sexo}"
+
+                        // Obtener el nombre de la raza del animal y llamar a la API
+                        val breedName = animal.raza
+                        callDogApi(breedName)
                     }
                 }
 
@@ -76,6 +101,36 @@ class DataAnimalActivity : AppCompatActivity() {
         } else {
             // Manejar el caso en el que animalId es nulo, por ejemplo, mostrar un mensaje de error o volver atrás
         }
+
+        // ... otras inicializaciones
+        imageRecyclerView = findViewById(R.id.imageRecyclerView)
+
+        // Obtener el nombre de la raza del animal
+        val breedName = intent.getStringExtra("raza")
+
+        // Llamar a la API para obtener imágenes de la raza específica
+        val dogApiService = RetrofitClient.create()
+        val call = dogApiService.getDogImages(breedName)
+
+        call.enqueue(object : Callback<DogApiResponse> {
+            override fun onResponse(call: Call<DogApiResponse>, response: Response<DogApiResponse>) {
+                if (response.isSuccessful) {
+                    val images = response.body()?.message ?: emptyList()
+                    println("Llamada a la API exitosa. Imágenes obtenidas: $images")
+                    if (images.isNotEmpty()) {
+                        showDogImages(images)
+                    } else {
+                        println("La lista de imágenes está vacía.")
+                    }
+                } else {
+                    println("Error en la respuesta de la API: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DogApiResponse>, t: Throwable) {
+                println("Error de red al llamar a la API: ${t.message}")
+            }
+        })
 
         val callButton = findViewById<Button>(R.id.callButton)
         callButton.setOnClickListener {
@@ -98,10 +153,44 @@ class DataAnimalActivity : AppCompatActivity() {
             }
         }
     }
+    // En la función showDogImages, actualiza el ViewPager con las imágenes
+    private fun showDogImages(images: List<String>) {
+        // Limitar la lista a solo 5 imágenes
+        val limitedImages = images.subList(0, minOf(5, images.size))
+
+        // Configurar el RecyclerView y el adaptador
+        imageAdapter = ImageAdapter(limitedImages)
+        imageRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        imageRecyclerView.adapter = imageAdapter
+    }
+
+    private fun callDogApi(breedName: String) {
+        // Llamar a la API para obtener imágenes de la raza específica
+        val dogApiService = RetrofitClient.create()
+        val call = dogApiService.getDogImages(breedName)
+
+        call.enqueue(object : Callback<DogApiResponse> {
+            override fun onResponse(call: Call<DogApiResponse>, response: Response<DogApiResponse>) {
+                if (response.isSuccessful) {
+                    val images = response.body()?.message ?: emptyList()
+                    println("Llamada a la API exitosa. Imágenes obtenidas: $images")
+                    if (images.isNotEmpty()) {
+                        showDogImages(images)
+                    } else {
+                        println("La lista de imágenes está vacía.")
+                    }
+                } else {
+                    println("Error en la respuesta de la API: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DogApiResponse>, t: Throwable) {
+                println("Error de red al llamar a la API: ${t.message}")
+            }
+        })
+    }
 
     companion object {
         private const val CALL_PERMISSION_REQUEST_CODE = 101
     }
-
-    }
-
+}

@@ -23,45 +23,7 @@ class AnimalViewModel : ViewModel() {
     private val apiService: DogApiService = retrofit.create(DogApiService::class.java)
     private val database = FirebaseDatabase.getInstance().reference.child("animales")
 
-    fun obtenerAnimalesDeApi(): Call<DogBreedsResponse> {
-        return apiService.getBreeds()
-    }
-
-    fun obtenerSubrazasDeApi(raza: String): Call<SubBreedsResponse> {
-        return apiService.getSubBreeds(raza)
-    }
-
-    fun obtenerAnimalPorId(animalId: String, listener: ValueEventListener) {
-        val animalReference = database.child("animales").child(animalId)
-        animalReference.addListenerForSingleValueEvent(listener)
-    }
-
     fun leerAnimalesDesdeFirebase(listener: ValueEventListener) {
         database.addListenerForSingleValueEvent(listener)
-    }
-    fun guardarAnimalEnFirebase(animal: Animal) {
-        val animalKey = database.child("animales").push().key
-        if (animalKey != null) {
-            database.child("animales").child(animalKey).setValue(animal)
-        }
-    }
-    fun tieneSubrazas(raza: String, callback: (Boolean) -> Unit) {
-        obtenerSubrazasDeApi(raza).enqueue(object : Callback<SubBreedsResponse> {
-            override fun onResponse(call: Call<SubBreedsResponse>, response: Response<SubBreedsResponse>) {
-                if (response.isSuccessful) {
-                    val subBreedsResponse = response.body()
-                    val tieneSubrazas = !subBreedsResponse?.message.isNullOrEmpty()
-                    callback(tieneSubrazas)
-                } else {
-                    // Manejar errores de la respuesta de la API para subrazas
-                    callback(false)
-                }
-            }
-
-            override fun onFailure(call: Call<SubBreedsResponse>, t: Throwable) {
-                // Manejar errores de la llamada a la API para subrazas
-                callback(false)
-            }
-        })
     }
 }
