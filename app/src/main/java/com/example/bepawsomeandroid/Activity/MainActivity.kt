@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.bepawsomeandroid.Fragment.Adoption
@@ -108,6 +109,23 @@ class MainActivity : AppCompatActivity() {
 
         var userObject = gson.fromJson(jsonObject.toString(), User::class.java)
 
+       var modoOscuro = sharedPreferences.getBoolean("modoOscuro", false)
+        println(modoOscuro)
+/*
+
+        try {
+            if (modoOscuro) {
+                // Aplicar tema oscuro
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                // Aplicar tema claro
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+*/
+
         //println(userObject.name)
 
         val searchView = findViewById<SearchView>(R.id.searchView)
@@ -126,8 +144,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        databaseReference = FirebaseDatabase.getInstance().reference
+       FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+       databaseReference = FirebaseDatabase.getInstance().reference
 
         navegation = findViewById(R.id.navMenu)
         navegation.setOnNavigationItemSelectedListener(mOnNavMenu)

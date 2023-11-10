@@ -80,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
         var jsonObjectUsuario = "{\"name\":\"$nameUser\",\"mail\":\"$mailUser\",\"imageUrl\":\"$imageUrlUser\",\"telefono\":\"$telefonoUser\",\"password\":\"$passwordUser\"}"
 
         editor.putString("UserLogueado",jsonObjectUsuario)
+        editor.putBoolean("modoOscuro", true)//aca se viene la fruta pura
         editor.commit()
 
 
