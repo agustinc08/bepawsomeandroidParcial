@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import android.Manifest
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.bepawsomeandroid.Api.DogApiResponse
 import com.example.bepawsomeandroid.Api.RetrofitClient
 import com.example.bepawsomeandroid.R
@@ -26,13 +25,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class DataAnimalActivity : AppCompatActivity() {
-    private lateinit var animalImageView: ImageView
     private lateinit var nameTextView: TextView
     private lateinit var ageTextView: TextView
     private lateinit var sexTextView: TextView
     private lateinit var razaTextView: TextView
     private lateinit var subRazaTextView: TextView
     private lateinit var imageRecyclerView: RecyclerView
+    private lateinit var imageView: ImageView
     private lateinit var imageAdapter: ImageAdapter
     private val telefonoAnimal = "123456789"
     private lateinit var databaseReference: DatabaseReference
@@ -42,21 +41,15 @@ class DataAnimalActivity : AppCompatActivity() {
         setContentView(R.layout.activity_data_animal)
 
         // Inicializar las vistas
-        animalImageView = findViewById(R.id.animalImageView)
         nameTextView = findViewById(R.id.nameTextView)
         ageTextView = findViewById(R.id.ageTextView)
         sexTextView = findViewById(R.id.sexTextView)
         razaTextView = findViewById(R.id.razaTextView)
         subRazaTextView = findViewById(R.id.subRazaTextView)
-
-
+        imageRecyclerView = findViewById(R.id.imageRecyclerView)
 
         // Recuperar el ID del animal de la intent
         val animalId = intent.getStringExtra("animalId")
-
-
-        // Imprimir el ID del animal en la consola
-        println("Animal ID: $animalId")
 
         // Verificar que animalId no sea nulo antes de usarlo en Firebase Database
         if (animalId != null) {
@@ -68,15 +61,10 @@ class DataAnimalActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val animal = snapshot.getValue(Animal::class.java)
                     if (animal != null) {
-                        Glide.with(this@DataAnimalActivity)
-                            .load(animal)
-                            .into(animalImageView)
-
-                        val animalImageUrl = animal?.imagenUrl
+                        val animalImageUrl = animal.imagenUrl
                         if (!animalImageUrl.isNullOrBlank()) {
-                            Glide.with(this@DataAnimalActivity)
-                                .load(animalImageUrl)
-                                .into(animalImageView)
+                            // Cambia esta línea para cargar la imagen en un ImageView
+                            Glide.with(this@DataAnimalActivity).load(animalImageUrl).into(imageView)
                         } else {
                             // Maneja el caso en el que la URL de la imagen es nula o vacía
                         }
@@ -101,9 +89,6 @@ class DataAnimalActivity : AppCompatActivity() {
         } else {
             // Manejar el caso en el que animalId es nulo, por ejemplo, mostrar un mensaje de error o volver atrás
         }
-
-        // ... otras inicializaciones
-        imageRecyclerView = findViewById(R.id.imageRecyclerView)
 
         // Obtener el nombre de la raza del animal
         val breedName = intent.getStringExtra("raza")
@@ -153,13 +138,14 @@ class DataAnimalActivity : AppCompatActivity() {
             }
         }
     }
-    // En la función showDogImages, actualiza el ViewPager con las imágenes
+
+    // En la función showDogImages, actualiza el RecyclerView con las imágenes
     private fun showDogImages(images: List<String>) {
         // Limitar la lista a solo 5 imágenes
         val limitedImages = images.subList(0, minOf(5, images.size))
 
         // Configurar el RecyclerView y el adaptador
-        imageAdapter = ImageAdapter(limitedImages)
+        imageAdapter = ImageAdapter(limitedImages.toMutableList())
         imageRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         imageRecyclerView.adapter = imageAdapter
     }
