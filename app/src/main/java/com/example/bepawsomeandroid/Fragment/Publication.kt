@@ -104,7 +104,6 @@ class Publication : Fragment() {
             }
         })
 
-
         buttonGuardar.setOnClickListener {
             // Obtener los valores de los campos de entrada
             val nombre = editTextNombre.text.toString()
@@ -115,7 +114,7 @@ class Publication : Fragment() {
             val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
 
             // Crear una instancia de Animal con los datos ingresados por el usuario
-            val nuevoAnimal = Animal(nombre, ubicacion, sexo, peso, edad, raza)
+            val nuevoAnimal = Animal(nombre, ubicacion, sexo, peso, edad, raza, imagenUrl = "")
 
             // Guardar el animal en Firebase
             val animalesRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("animales")

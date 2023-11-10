@@ -1,7 +1,5 @@
 package com.example.bepawsomeandroid.Models
 
-import android.widget.Spinner
-
 data class Animal(
     var nombre: String = "",
     var ubicacion: String = "",
@@ -9,10 +7,9 @@ data class Animal(
     var peso: Double = 0.0,
     var edad: Int = 0,
     var raza: String = "",
-    var subraza: String? = null
-
-    ) {
+    var subraza: String? = null,
+    var imagenUrl: String  // Agrega este campo para la URL de la imagen del perro
+) {
     // Constructor sin argumentos necesario para Firebase
-    constructor() : this("", "", "", 0.0, 0, "", "")
+    constructor() : this("", "", "", 0.0, 0, "", "", "")
 }
-

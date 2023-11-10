@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/animalButton"
-    android:padding="16dp">
+    android:layout_height="match_parent">
+
+    <!-- Añade el ViewPager2 al diseño con un ID -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
     <ImageView
         android:id="@+id/animalImageView"
@@ -16,6 +21,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:id="@+id/textContainer"
