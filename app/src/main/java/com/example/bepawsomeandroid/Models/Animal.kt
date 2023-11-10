@@ -8,7 +8,7 @@ data class Animal(
     var edad: Int = 0,
     var raza: String = "",
     var subraza: String? = null,
-    var imagenUrl: String  // Agrega este campo para la URL de la imagen del perro
+    var imagenUrl: String
 ) {
     // Constructor sin argumentos necesario para Firebase
     constructor() : this("", "", "", 0.0, 0, "", "", "")
